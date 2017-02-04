@@ -16,6 +16,13 @@ const solPath = roverPath + "/:sol"
 // radius to find nearby sols to.
 const radius = 10
 
+var (
+	// errBadSolType is an error for when the sol type is invalid.
+	errBadSolType = errors.New("sol type must be int")
+	// errBadSolValue is an error for when the sol value is invalid.
+	errBadSolValue = errors.New("sol value invalid")
+)
+
 // solController is a resource and resource container which returns the cameras
 // and nearest sols to a rover at a current sol.
 type solController struct {
@@ -33,10 +40,7 @@ func (c *solController) Handle(r *trim.Request) trim.Response {
 	rover := r.URLArg("rover")
 	sol, err := strconv.Atoi(r.URLArg("sol"))
 	if err != nil {
-		return errResponse(
-			errors.New("sol must be int"),
-			trim.CodeBadRequest,
-		)
+		return errResponse(errBadSolType, trim.CodeBadRequest)
 	}
 	rm, err := scraper.BuildManifest(rover, manifestPrefix)
 	if err != nil && err == scraper.ErrNoRover {
@@ -44,10 +48,10 @@ func (c *solController) Handle(r *trim.Request) trim.Response {
 	}
 	sm, ok := rm.Photos[sol]
 	if !ok {
-		return errResponse(errors.New("invalid sol"), trim.CodeNotFound)
+		return errResponse(errBadSolValue, trim.CodeNotFound)
 	}
 	cps := make(map[string]string)
-	cs := make([]string, len(sm.Cameras))
+	var cs []string
 	for c := range sm.Cameras {
 		cs = append(cs, c)
 		cps[c] = makeCameraPath(rover, sol, c)
@@ -57,7 +61,14 @@ func (c *solController) Handle(r *trim.Request) trim.Response {
 		near[sol.Sol] = makeSolPath(rover, sol.Sol)
 	}
 	return response.NewJSON(
-		trim.AnyMap{"cameraPaths": cps, "nearestSols": near},
+		trim.AnyMap{
+			"cameraPaths":     cps,
+			"nearestSols":     near,
+			"thumbnailURL":    sm.ThumbnailUrl,
+			"thumbnailCamera": sm.ThumbnailCamera,
+			"earthDate":       sm.EarthDate,
+			"totalPhotos":     sm.TotalPhotos,
+		},
 		trim.CodeOK,
 	)
 }
