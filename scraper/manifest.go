@@ -11,9 +11,12 @@ import (
 // It contains the number of photos taken that day and a set
 // containing all cameras that took photos that day.
 type SolManifest struct {
-	Sol         int
-	TotalPhotos int
-	Cameras     map[string]interface{}
+	Sol             int
+	TotalPhotos     int
+	Cameras         map[string]interface{}
+	ThumbnailUrl    string
+	ThumbnailCamera string
+	EarthDate       string
 }
 
 // String implements stringer for SolManifest
@@ -23,6 +26,9 @@ func (sm *SolManifest) String() string {
 		cameras = append(cameras, c)
 	}
 	out := fmt.Sprintf("%d: %d photos [%s]", sm.Sol, sm.TotalPhotos, strings.Join(cameras, ","))
+	if sm.ThumbnailUrl != "" {
+		out = fmt.Sprintf("%s date: %s thumbnail (%s): %s", out, sm.EarthDate, sm.ThumbnailCamera, sm.ThumbnailUrl)
+	}
 	return out
 }
 
@@ -42,7 +48,7 @@ type RoverManifest struct {
 	Photos      map[int]*SolManifest
 }
 
-func (rm *RoverManifest) GetNearbySols(sol, radius int, cameras []string) []*SolManifest{
+func (rm *RoverManifest) GetNearbySols(sol, radius int, cameras []string) []*SolManifest {
 	out := []*SolManifest{}
 	midIdx := sort.SearchInts(rm.ActiveSols, sol)
 

@@ -1,11 +1,24 @@
 package scraper
 
 import (
+	"bufio"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"strconv"
+	"strings"
 )
+
+// thumbnailData contains information about what thumbnail is availabile for a
+// given sol.
+type thumbnailData struct {
+	sol       int
+	earthDate string
+	camera    string
+	thumbnail string
+}
 
 // BuildManifest will take the name of a rover and a path from the
 // where the program is run to the /scraper/manifests directory.
@@ -140,7 +153,54 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 		}
 	}
 
+	thumbData, err := fetchThumbnailData(roverName, filePrefix)
+	if err == nil {
+		for _, thumbInfo := range thumbData {
+			sol := thumbInfo.sol
+			outManifest.Photos[sol].ThumbnailUrl = thumbInfo.thumbnail
+			outManifest.Photos[sol].ThumbnailCamera = thumbInfo.camera
+			outManifest.Photos[sol].EarthDate = thumbInfo.earthDate
+		}
+	} else {
+		fmt.Println("Unable to get thumbnail info!")
+	}
+
 	return outManifest, nil
+}
+
+func fetchThumbnailData(roverName, filePrefix string) ([]thumbnailData, error) {
+
+	fileName := fmt.Sprintf("%s/%s_thumbnail.txt", filePrefix, roverName)
+	thumbnailFile, err := os.Open(fileName)
+	if err != nil {
+		return nil, err
+	}
+
+	out := []thumbnailData{}
+
+	scanner := bufio.NewScanner(thumbnailFile)
+	for scanner.Scan() {
+		lineData := strings.Fields(scanner.Text())
+		if len(lineData) != 4 {
+			return nil, errors.New("Not enough columns.")
+		}
+		sol, err := strconv.ParseInt(lineData[0], 0, 32)
+		if err != nil {
+			return nil, errors.New("Sol is not an integer.")
+		}
+		out = append(out, thumbnailData{
+			sol:       int(sol),
+			camera:    lineData[1],
+			earthDate: lineData[2],
+			thumbnail: lineData[3],
+		})
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return out, nil
 }
 
 func parseSolManifest(data interface{}) (int, *SolManifest, error) {
@@ -194,7 +254,7 @@ func parseSolManifest(data interface{}) (int, *SolManifest, error) {
 	}
 
 	solManifest := &SolManifest{
-		Sol:				 int(solNum),
+		Sol:         int(solNum),
 		TotalPhotos: int(totalPhotosNum),
 		Cameras:     solCameras,
 	}
