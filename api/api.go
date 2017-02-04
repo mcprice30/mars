@@ -48,6 +48,10 @@
 //       {
 //         "cameraPaths": ({(string): (string)}),
 //         "nearestSols": ({(string): (string)}),
+//         "earthDate": (string),
+//         "thumbnailCamera": (string),
+//         "thumbnailURL": (string),
+//         "totalPhotos": (int)
 //       }
 //
 //     The "cameraPaths" key contains a mapping of camera names to their

@@ -1,6 +1,13 @@
 package api
 
-import "github.com/jwowillo/trim"
+import (
+	"fmt"
+	"strconv"
+
+	"github.com/jwowillo/trim"
+	"github.com/jwowillo/trim/response"
+	"github.com/mcprice30/mars/scraper"
+)
 
 // cameraPath is the path to the camera resource.
 const cameraPath = solPath + "/:camera"
@@ -21,5 +28,24 @@ func (c *cameraController) Path() string {
 //
 // Returns an error if the rover, sol, or camera don't exist.
 func (c *cameraController) Handle(r *trim.Request) trim.Response {
-	return nil
+	rover := r.URLArg("rover")
+	camera := r.URLArg("camera")
+	sol, err := strconv.Atoi(r.URLArg("sol"))
+	if err != nil {
+		return errResponse(errBadSolType, trim.CodeBadRequest)
+	}
+	rm, err := scraper.BuildManifest(rover, manifestPrefix)
+	if err != nil && err == scraper.ErrNoRover {
+		return errResponse(err, trim.CodeNotFound)
+	}
+	sm, ok := rm.Photos[sol]
+	if !ok {
+		return errResponse(errBadSolValue, trim.CodeNotFound)
+	}
+	// Temporary until necessary functionality is added.
+	fmt.Println(camera, sm)
+	return response.NewJSON(
+		trim.AnyMap{"imageURLs": []string{}},
+		trim.CodeOK,
+	)
 }
