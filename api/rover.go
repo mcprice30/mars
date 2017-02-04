@@ -36,10 +36,7 @@ func (c *roverController) Handle(r *trim.Request) trim.Response {
 	rover := r.URLArg("rover")
 	rm, err := scraper.BuildManifest(rover, manifestPrefix)
 	if err != nil && err == scraper.ErrNoRover {
-		return response.NewJSON(
-			trim.AnyMap{"message": err},
-			trim.CodeNotFound,
-		)
+		return errResponse(err, trim.CodeNotFound)
 	}
 	sm := trim.AnyMap{}
 	for _, sol := range rm.ActiveSols {
