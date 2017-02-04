@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Printf("Usage: %s <rover name>\n", os.Args[0])
+	if len(os.Args) != 3 {
+		fmt.Printf("Usage: %s <rover name> <camera name>\n", os.Args[0])
 		os.Exit(1)
 	}
 	manifest, err := scraper.BuildManifest(os.Args[1], ".")
@@ -18,5 +18,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(manifest)
+//	fmt.Println(manifest)
+	out := manifest.GetNearbySols(1000, 15, []string{os.Args[2]})
+	for _, entry := range out {
+		fmt.Println(entry)
+	}
 }
