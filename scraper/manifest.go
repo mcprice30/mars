@@ -6,6 +6,13 @@ import (
 	"strings"
 )
 
+// Location represents the location of a rover on a given sol.
+type Location struct {
+	Latitude  string
+	Longitude string
+	Sol       int
+}
+
 // SolManifest represents the manifest for a single sol for a given
 // rover.
 // It contains the number of photos taken that day and a set
@@ -52,6 +59,7 @@ type RoverManifest struct {
 	TotalPhotos int
 	ActiveSols  []int
 	Photos      map[int]*SolManifest
+	Locations   []Location
 }
 
 func (rm *RoverManifest) GetNearbySols(sol, radius int, cameras []string) []*SolManifest {

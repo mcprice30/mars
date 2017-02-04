@@ -20,12 +20,6 @@ type thumbnailData struct {
 	thumbnail string
 }
 
-type coordsData struct {
-	latitude  string
-	longitude string
-	sol       int
-}
-
 // ErrNoRover is returned if a bad rover is requested.
 var ErrNoRover = errors.New("bad rover name")
 
@@ -181,9 +175,10 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 	if err == nil {
 		for _, sol := range outManifest.ActiveSols {
 			solManifest := outManifest.Photos[sol]
-			solManifest.Longitude = coordsData[sol].longitude
-			solManifest.Latitude = coordsData[sol].latitude
+			solManifest.Longitude = coordsData[sol].Longitude
+			solManifest.Latitude = coordsData[sol].Latitude
 		}
+		outManifest.Locations = coordsData
 	} else {
 		fmt.Fprintf(os.Stderr, "Unable to get coords info for %s (%s)\n", roverName, err)
 	}
@@ -191,14 +186,14 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 	return outManifest, nil
 }
 
-func fetchCoordsData(roverName, filePrefix string, numSols int) ([]coordsData, error) {
+func fetchCoordsData(roverName, filePrefix string, numSols int) ([]Location, error) {
 	fileName := fmt.Sprintf("%s/%s_coords.txt", filePrefix, roverName)
 	coordsFile, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
 	}
 
-	out := make([]coordsData, numSols+1)
+	out := make([]Location, numSols+1)
 	minSol := 1000000
 	maxSol := 0
 
@@ -227,10 +222,10 @@ func fetchCoordsData(roverName, filePrefix string, numSols int) ([]coordsData, e
 			if sol > maxSol {
 				maxSol = sol
 			}
-			out[sol] = coordsData{
-				longitude: lineData[0],
-				latitude:  lineData[1],
-				sol:       sol,
+			out[sol] = Location{
+				Longitude: lineData[0],
+				Latitude:  lineData[1],
+				Sol:       sol,
 			}
 		}
 	}
