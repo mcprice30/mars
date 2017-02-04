@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="." />
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link href="{{ static }}/base.css" rel="stylesheet" type="text/css">
+    <link href="{{ static }}/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script src="{{ static }}/node_modules/core-js/client/shim.min.js"></script>
+    <script src="{{ static }}/node_modules/zone.js/dist/zone.min.js"></script>
+    <script src="{{ static }}/node_modules/zone.js/dist/long-stack-trace-zone.min.js"></script>
+    <script src="{{ static }}/node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="{{ static }}/node_modules/systemjs/dist/system.js"></script>
+    {% if production %}
+    <script src="{{ static }}/config.production.js"></script>
+    {% else %}
+    <script src="{{ static }}/config.js"></script>
+    {% endif %}
+    <script>
+    	System.import('app').catch(console.error.bind(console));
+  	</script>
+  </head>
+  <body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Title</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+    	<app class="app-container"></app>
+    </div>
+    <script src="{{ static }}/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="{{ static }}/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
