@@ -36,9 +36,12 @@ func makeInjectPaths(h string, p int) func(*trim.Request) trim.AnyMap {
 		client := r.Context("client").(*application.Client)
 		api := r.Context("api").(*application.API)
 		static := r.Context("static").(*application.Static)
-		m["client"] = path(client.Application, r, h, p)
-		m["api"] = path(api.Application, r, h, p)
-		m["static"] = path(static.Application, r, h, p)
+		m["client"] = path(client, r, h, p)
+		m["api"] = path(api, r, h, p)
+		m["static"] = static.URLFor(trim.Pattern{
+			static.Subdomain(),
+			static.BasePath(),
+		}, h).Path()
 		if h != "localhost" {
 			m["production"] = true
 		}

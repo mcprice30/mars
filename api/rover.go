@@ -43,6 +43,13 @@ func (c *roverController) Handle(r *trim.Request) trim.Response {
 		sm[strconv.Itoa(sol)] = makeSolPath(rover, sol)
 
 	}
+	ls := trim.AnyMap{}
+	for _, loc := range rm.Locations {
+		ls[strconv.Itoa(loc.Sol)] = trim.AnyMap{
+			"latitude":  loc.Latitude,
+			"longitude": loc.Longitude,
+		}
+	}
 	mm := trim.AnyMap{
 		"name":        rm.Name,
 		"landingDate": rm.LandingDate,
@@ -51,6 +58,7 @@ func (c *roverController) Handle(r *trim.Request) trim.Response {
 		"maxSol":      rm.MaxSol,
 		"maxDate":     rm.MaxDate,
 		"totalPhotos": rm.TotalPhotos,
+		"locations":   ls,
 	}
 	return response.NewJSON(
 		trim.AnyMap{"solPaths": sm, "manifest": mm},

@@ -68,6 +68,8 @@ func (c *solController) Handle(r *trim.Request) trim.Response {
 			"thumbnailCamera": sm.ThumbnailCamera,
 			"earthDate":       sm.EarthDate,
 			"totalPhotos":     sm.TotalPhotos,
+			"latitude":        sm.Latitude,
+			"longitude":       sm.Longitude,
 		},
 		trim.CodeOK,
 	)
