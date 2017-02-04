@@ -7,6 +7,7 @@ import (
 	"github.com/jwowillo/pack"
 	"github.com/jwowillo/trim"
 	"github.com/jwowillo/trim/response"
+	"github.com/mcprice30/mars/scraper"
 )
 
 // roverPath is the path to the rover resource.
@@ -43,7 +44,31 @@ func (c *roverController) Handle(r *trim.Request) trim.Response {
 			)}, trim.CodeBadRequest,
 		)
 	}
-	return nil
+	rm, err := scraper.BuildManifest(rover, "scraper/manifests")
+	if err != nil {
+		return response.NewJSON(
+			trim.AnyMap{"message": err},
+			trim.CodeInternalServerError,
+		)
+	}
+	sm := trim.AnyMap{}
+	for _, sol := range rm.ActiveSols {
+		sm[strconv.Itoa(sol)] = makeSolPath(rover, sol)
+
+	}
+	mm := trim.AnyMap{
+		"name":        rm.Name,
+		"landingDate": rm.LandingDate,
+		"launchDate":  rm.LaunchDate,
+		"status":      rm.Status,
+		"maxSol":      rm.MaxSol,
+		"maxDate":     rm.MaxDate,
+		"totalPhotos": rm.TotalPhotos,
+	}
+	return response.NewJSON(
+		trim.AnyMap{"solPaths": sm, "manifest": mm},
+		trim.CodeOK,
+	)
 }
 
 // makeSolPath makes a path to a sol resource based on the rover and a sol.

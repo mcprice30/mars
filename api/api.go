@@ -22,7 +22,18 @@
 //    Is a resource and collection resource that returns a JSON object of the
 //    form
 //
-//      {"solPaths": {(string): (string)}, "manifest": (string)}
+//      {
+//        "solPaths": {(string): (string)},
+//        "manifest": {
+//          "name": (string),
+//          "landingDate": (string),
+//          "launchDate": (string),
+//          "status": (string),
+//          "maxDate": (string),
+//          "maxSol": (int),
+//          "totalPhotos": (int)
+//        }
+//      }
 //
 //    The "solPaths" key contains a mapping of sols to their resource paths. The
 //    key "manifest" contains important information about the rover.

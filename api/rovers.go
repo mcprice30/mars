@@ -9,7 +9,7 @@ import (
 const roversPath = "/rovers"
 
 // rovers is the list of all possible rovers.
-var rovers = []string{"curiousity", "opportunity", "spirit"}
+var rovers = []string{"curiosity", "opportunity", "spirit"}
 
 // roversController is a collection resource which contains all possible
 // rovers.
