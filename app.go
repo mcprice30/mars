@@ -6,6 +6,7 @@ import (
 
 	"github.com/jwowillo/trim"
 	"github.com/jwowillo/trim/application"
+	"github.com/jwowillo/trim/response"
 	"github.com/mcprice30/mars/api"
 )
 
@@ -25,6 +26,12 @@ func New(h string, p int) *Application {
 		),
 	}
 	api.Configure(app.API())
+	app.SetHandler(
+		trim.NewHandlerFunc(func(*trim.Request) trim.Response {
+			return response.NewRedirect("/")
+		}),
+		trim.CodeNotFound,
+	)
 	return app
 }
 

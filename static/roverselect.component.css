@@ -1,7 +1,8 @@
+/**
 .robot-select {
 	background: #f0e7e7;
 	border-width: 5px;
-	border-radius: 10px;	
+	border-radius: 10px;
 	margin-top: 40px;
 	margin-bottom: 40px;
 }
@@ -16,4 +17,12 @@
 	background: #fda600;
 	border-width: 5px;
 	border-radius: 10px;
+}
+*/
+
+
+#rover-canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
 }

@@ -4,12 +4,12 @@ h1 {
 
 section {
   display: block;
-  height: 75%;
+  height: 80%;
 }
 
 slider {
   background-color: black;
   padding: 5px;
   display: block;
-  height: 25%;
+  height: 20%;
 }
