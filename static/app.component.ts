@@ -14,9 +14,6 @@ export class AppComponent implements OnInit {
   constructor(private _router: Router) {}
 
   ngOnInit() {
-    var thing = this;
-    setTimeout(function() {
-      thing._router.navigate(['/roverselect'])
-    }, 1000);
+  
   }
 }

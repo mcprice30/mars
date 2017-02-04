@@ -1,5 +1,6 @@
 import {Component, NgModule, OnInit} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
+import {Router} from '@angular/router';
 
 @Component({
   styles: [`
@@ -33,6 +34,12 @@ import {BrowserModule} from '@angular/platform-browser'
 export class SplashComponent implements OnInit {
   word: string = 'random'
 
+  constructor(private _router: Router) {}
+
   ngOnInit() {
+    var thing = this;
+    setTimeout(function() {
+      thing._router.navigate(['/app'])
+    }, 1000);
   }
 }
