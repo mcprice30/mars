@@ -78,6 +78,7 @@ export class RoverSelectComponent implements OnInit {
           if self.insideRectangle([e.clientX, e.clientY], self.boxes[box]) {
             self.mainView = "rover-map";
             self.rover = box.toLowerCase();
+            self.roverChange.emit(self.rover);
             self.mainViewChange.emit(self.mainView);
             break;
           }
