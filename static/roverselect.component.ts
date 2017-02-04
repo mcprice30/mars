@@ -4,6 +4,7 @@ import {Rover, RoverManifest} from './entity/Rover';
 import {RoverViewService} from './service/roverview.service';
 
 @Component({
+  selector: '',
   styleUrls: ['.{{ static }}/roverselect.component.css'],
   templateUrl: '{{ static }}/roverselect.component.html',
 })

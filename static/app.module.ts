@@ -10,7 +10,8 @@ import { HttpModule } from '@angular/http';
 import { MasonryModule } from 'angular2-masonry';
 import { CollageComponent } from './collage.component';
 import { AppRouterModule } from './app-router.module';
-import {SliderComponent} from './slider.component';
+import { SliderComponent } from './slider.component';
+import { RouterComponent } from './router.component';
 
 @NgModule({
   imports: [
@@ -24,10 +25,11 @@ import {SliderComponent} from './slider.component';
     AppComponent,
     RoverSelectComponent,
     CollageComponent,
-    SplashComponent
-    SliderComponent
+    SplashComponent,
+    SliderComponent,
+    RouterComponent
   ],
-  bootstrap: [ AppComponent ],
+  bootstrap: [ RouterComponent ],
   providers: [
     RoverViewService
   ]
