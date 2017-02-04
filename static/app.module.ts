@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component'
 import { SplashComponent } from './splash.component';
 import { RoverSelectComponent } from './roverselect.component';
+import { RoverMapComponent } from './rover-map.component';
 import { RoverService } from './service/rover.service';
 import { HttpModule } from '@angular/http';
 import { MasonryModule } from 'angular2-masonry';
@@ -24,6 +25,7 @@ import { RouterComponent } from './router.component';
   declarations: [
     AppComponent,
     RoverSelectComponent,
+    RoverMapComponent,
     CollageComponent,
     SplashComponent,
     SliderComponent,
