@@ -8,8 +8,8 @@ import (
 
 // Location represents the location of a rover on a given sol.
 type Location struct {
-	Latitude  string
-	Longitude string
+	Latitude  float64
+	Longitude float64
 	Sol       int
 }
 
@@ -24,8 +24,8 @@ type SolManifest struct {
 	ThumbnailUrl    string
 	ThumbnailCamera string
 	EarthDate       string
-	Longitude       string
-	Latitude        string
+	Longitude       float64
+	Latitude        float64
 }
 
 // String implements stringer for SolManifest
@@ -39,8 +39,8 @@ func (sm *SolManifest) String() string {
 		out = fmt.Sprintf("%s date: %s thumbnail (%s): %s", out, sm.EarthDate, sm.ThumbnailCamera, sm.ThumbnailUrl)
 	}
 
-	if sm.Longitude != "" {
-		out = fmt.Sprintf("%s located at: %s, %s", out, sm.Longitude, sm.Latitude)
+	if sm.Longitude != 0 {
+		out = fmt.Sprintf("%s located at: %f, %f", out, sm.Longitude, sm.Latitude)
 	}
 	return out
 }

@@ -211,6 +211,14 @@ func fetchCoordsData(roverName, filePrefix string, numSols int) ([]Location, err
 		if err != nil {
 			return nil, errors.New("End sol is not an integer.")
 		}
+		longitude, err := strconv.ParseFloat(lineData[0], 64)
+		if err != nil {
+			return nil, errors.New("Longitude is not a number.")
+		}
+		latitude, err := strconv.ParseFloat(lineData[1], 64)
+		if err != nil {
+			return nil, errors.New("Latitude is not a number.")
+		}
 
 		startSol := int(sSol)
 		endSol := int(eSol)
@@ -223,8 +231,8 @@ func fetchCoordsData(roverName, filePrefix string, numSols int) ([]Location, err
 				maxSol = sol
 			}
 			out[sol] = Location{
-				Longitude: lineData[0],
-				Latitude:  lineData[1],
+				Longitude: longitude,
+				Latitude:  latitude,
 				Sol:       sol,
 			}
 		}
