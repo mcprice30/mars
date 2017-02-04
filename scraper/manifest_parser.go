@@ -232,10 +232,12 @@ func fetchCoordsData(roverName, filePrefix string, numSols int) ([]Location, err
 
 	for sol := minSol; sol >= 0; sol-- {
 		out[sol] = out[minSol]
+		out[sol].Sol = sol
 	}
 
 	for sol := maxSol; sol < len(out); sol++ {
 		out[sol] = out[maxSol]
+		out[sol].Sol = sol
 	}
 
 	return out, nil
