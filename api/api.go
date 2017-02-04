@@ -67,7 +67,7 @@
 //
 //     Is a resource that returns a JSON object of the form
 //
-//       {"imageURLs": ([]string)}
+//       {"imageURLs": ([]{({"earthDate": (string), "url": (string)})})}
 //
 //     The "imageURLs" key contains a list of imageURLs taken by the rover's
 //     camera on the particular sol.

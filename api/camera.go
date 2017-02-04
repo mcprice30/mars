@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/jwowillo/trim"
@@ -42,10 +41,27 @@ func (c *cameraController) Handle(r *trim.Request) trim.Response {
 	if !ok {
 		return errResponse(errBadSolValue, trim.CodeNotFound)
 	}
-	// Temporary until necessary functionality is added.
-	fmt.Println(camera, sm)
+	var cs []string
+	for c := range sm.Cameras {
+		cs = append(cs, c)
+	}
+	ps, err := scraper.GetSolImgs(
+		rover,
+		strconv.Itoa(sol),
+		[]string{camera},
+	)
+	if err != nil {
+		return errResponse(err, trim.CodeInternalServerError)
+	}
+	var pms []trim.AnyMap
+	for _, p := range ps {
+		pms = append(
+			pms,
+			trim.AnyMap{"url": p.Url, "earthDate": p.EarthDate},
+		)
+	}
 	return response.NewJSON(
-		trim.AnyMap{"imageURLs": []string{}},
+		trim.AnyMap{"images": pms},
 		trim.CodeOK,
 	)
 }
