@@ -25,7 +25,10 @@ System.config({
     'requirejs': '{{ static }}/node_modules/requirejs/bin/r.js',
 
     'rxjs': '{{ static }}/node_modules/rxjs',
-    'typescript': '{{ static }}/node_modules/typescript/lib/typescript.js'
+    'typescript': '{{ static }}/node_modules/typescript/lib/typescript.js',
+
+    "angular2-masonry": "{{ static }}/node_modules/angular2-masonry",
+    "masonry-layout": "{{ static }}/node_modules/masonry-layout/dist/masonry.pkgd.js"
   },
   packages: {
     app: {
@@ -85,6 +88,13 @@ System.config({
     },
     'requirejs': {
       defaultExtension: 'js'
+    },
+    "angular2-masonry": { 
+      defaultExtension: "js",
+      main: "index"
+    },
+    'masonry-layout': {
+      defaultExtension: "js"
     }
   }
 });

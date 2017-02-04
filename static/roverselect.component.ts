@@ -4,7 +4,6 @@ import {Rover, RoverManifest} from './entity/Rover';
 import {RoverViewService} from './service/roverview.service';
 
 @Component({
-  selector: 'roverselect',
   styleUrls: ['.{{ static }}/roverselect.component.css'],
   templateUrl: '{{ static }}/roverselect.component.html',
 })
@@ -24,5 +23,9 @@ export class RoverSelectComponent implements OnInit {
     this._roverViewService.getRoverList().then(rovers => {
       this.rovers = rovers;
     });
+  }
+
+  roverSelect(roverName: string) {
+    console.log(roverName);
   }
 }

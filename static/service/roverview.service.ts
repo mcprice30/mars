@@ -13,7 +13,6 @@ export class RoverViewService {
   getRoverList(): Promise<Rover[]> {
     var roverList = [];
     return new Promise((resolve, reject) => {
-      var roverList = [];
       this._http.get("{{ api }}/rovers").subscribe((res: Response) => {
         // normal handle
         var data = res.json().data;

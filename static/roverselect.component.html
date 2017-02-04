@@ -4,7 +4,7 @@
 			<div class="col-md-12 robot-select">
 				<h1 class="robot-title">Robot Selection</h1>
 				<div class="row">
-					<div *ngFor="let rover of rovers" class="col-md-4 robot-select">
+					<div (click)="roverSelect(rover.manifest.name)" *ngFor="let rover of rovers" class="col-md-4 robot-button">
 						<h1 class="robot-title">{{rover.manifest.name}}</h1>
 					</div>
 				</div>

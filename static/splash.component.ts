@@ -2,7 +2,6 @@ import {Component, NgModule, OnInit} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 
 @Component({
-  selector: 'special-splash',
   styles: [`
     .vertical-center {
       min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
