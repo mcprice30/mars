@@ -29,12 +29,12 @@ func (c *roversController) Path() string {
 func (c *roversController) Handle(r *trim.Request) trim.Response {
 	m := trim.AnyMap{}
 	for _, r := range rovers {
-		m[r] = roverPath(roversPath, r)
+		m[r] = makeRoverPath(r)
 	}
 	return response.NewJSON(m, http.StatusOK)
 }
 
 // roverPath creates a path to a rover resource based on a given rover.
-func roverPath(rover string) string {
+func makeRoverPath(rover string) string {
 	return roversPath + "/" + rover
 }
