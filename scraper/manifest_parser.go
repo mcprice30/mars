@@ -7,6 +7,12 @@ import (
 	"io/ioutil"
 )
 
+// ErrNoRover is returned if a bad rover is requested.
+var ErrNoRover = errors.New("bad rover name")
+
+// Rovers is a list of all possible rovers.
+var Rovers = []string{"curiosity", "opportunity", "spirit"}
+
 // BuildManifest will take the name of a rover and a path from the
 // where the program is run to the /scraper/manifests directory.
 // It will return the manifest for that rover, if there is one.
@@ -16,7 +22,7 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 	fileName := fmt.Sprintf("%s/%s.json", filePrefix, roverName)
 	fileData, err := ioutil.ReadFile(fileName)
 	if err != nil {
-		return nil, fmt.Errorf("No rover with name %s", roverName)
+		return nil, ErrNoRover
 	}
 
 	// Unmarshal JSON and retrieve photo manifest.
@@ -194,7 +200,7 @@ func parseSolManifest(data interface{}) (int, *SolManifest, error) {
 	}
 
 	solManifest := &SolManifest{
-		Sol:				 int(solNum),
+		Sol:         int(solNum),
 		TotalPhotos: int(totalPhotosNum),
 		Cameras:     solCameras,
 	}

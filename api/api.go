@@ -12,7 +12,7 @@
 //
 //     Is a collection resource that returns a JSON object of the form
 //
-//       {"roverPaths": {(string): (string)}}.
+//       {"roverPaths": ({(string): (string)})}.
 //
 //     The "roverPaths" key contains a mapping of rover names to their resource
 //     paths.
@@ -23,8 +23,8 @@
 //    form
 //
 //      {
-//        "solPaths": {(string): (string)},
-//        "manifest": {
+//        "solPaths": ({(int): (string)}),
+//        "manifest": ({
 //          "name": (string),
 //          "landingDate": (string),
 //          "launchDate": (string),
@@ -32,7 +32,7 @@
 //          "maxDate": (string),
 //          "maxSol": (int),
 //          "totalPhotos": (int)
-//        }
+//        })
 //      }
 //
 //    The "solPaths" key contains a mapping of sols to their resource paths. The
@@ -46,8 +46,8 @@
 //     form
 //
 //       {
-//         "cameraPaths": {(string): (string)},
-//         "nearestSols": {(string): (string)},
+//         "cameraPaths": ({(string): (string)}),
+//         "nearestSols": ({(string): (string)}),
 //       }
 //
 //     The "cameraPaths" key contains a mapping of camera names to their

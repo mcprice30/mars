@@ -42,7 +42,7 @@ type RoverManifest struct {
 	Photos      map[int]*SolManifest
 }
 
-func (rm *RoverManifest) GetNearbySols(sol, radius int, cameras []string) []*SolManifest{
+func (rm *RoverManifest) GetNearbySols(sol, radius int, cameras []string) []*SolManifest {
 	out := []*SolManifest{}
 	midIdx := sort.SearchInts(rm.ActiveSols, sol)
 

@@ -3,13 +3,11 @@ package api
 import (
 	"github.com/jwowillo/trim"
 	"github.com/jwowillo/trim/response"
+	"github.com/mcprice30/mars/scraper"
 )
 
 // roversPath is the path to the rovers collection resource.
 const roversPath = "/rovers"
-
-// rovers is the list of all possible rovers.
-var rovers = []string{"curiosity", "opportunity", "spirit"}
 
 // roversController is a collection resource which contains all possible
 // rovers.
@@ -26,7 +24,7 @@ func (c *roversController) Path() string {
 // roverResource paths.
 func (c *roversController) Handle(r *trim.Request) trim.Response {
 	m := trim.AnyMap{}
-	for _, r := range rovers {
+	for _, r := range scraper.Rovers {
 		m[r] = makeRoverPath(r)
 	}
 	return response.NewJSON(m, trim.CodeOK)
