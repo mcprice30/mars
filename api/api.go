@@ -3,21 +3,59 @@
 //
 // Every endpoint is read only and thus only supports GET trim.Requests.
 //
+// Any error objects are of the form
+//
+//   {"message": (string)}
+//
 // The attached resources are:
 //   - /rovers
 //
 //     Is a collection resource that returns a JSON object of the form
 //
-//       {"roverPaths": {(string): ([]string)}([]string)}.
+//       {"roverPaths": {(string): (string)}}.
 //
-//     The "roverPaths" key contains a dictionary that maps rover names to their
-//     resource paths.
+//     The "roverPaths" key contains a mapping of rover names to their resource
+//     paths.
 //
 //   - /rovers/:rover
 //
+//    Is a resource and collection resource that returns a JSON object of the
+//    form
+//
+//      {"solPaths": {(string): (string)}, "manifest": (string)}
+//
+//    The "solPaths" key contains a mapping of sols to their resource paths. The
+//    key "manifest" contains important information about the rover.
+//
+//    An error is returned if a rover not returned by "/rovers" is requested.
+//
 //   - /rovers/:rover/:sol
 //
+//     Is a resource and collection resource that returns a JSON object of the
+//     form
+//
+//       {
+//         "cameraPaths": {(string): (string)},
+//         "nearestSols": {(string): (string)},
+//       }
+//
+//     The "cameraPaths" key contains a mapping of camera names to their
+//     resource paths. The key "nearestSols" contains sols near the requested
+//     sol.
+//
+//     An error is returned if the requested rover or sol doesn't exist.
+//
 //   - /rovers/:rover/:sol/:camera
+//
+//     Is a resource that returns a JSON object of the form
+//
+//       {"imageURLs": ([]string)}
+//
+//     The "imageURLs" key contains a list of imageURLs taken by the rover's
+//     camera on the particular sol.
+//
+//     An error is returned if the requested rover, sol, or camera doesn't
+//     exist.
 package api
 
 import (
