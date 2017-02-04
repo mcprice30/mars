@@ -1,16 +1,19 @@
 package api
 
 import (
-	"fmt"
 	"strconv"
 
-	"github.com/jwowillo/pack"
 	"github.com/jwowillo/trim"
 	"github.com/jwowillo/trim/response"
+	"github.com/mcprice30/mars/scraper"
 )
 
 // roverPath is the path to the rover resource.
 const roverPath = roversPath + "/:rover"
+
+// manifestPrefix is the file prefix to the manifests relative to the project
+// root.
+const manifestPrefix = "scraper/manifests"
 
 // roverController is a resource representing a rover that also serves as a
 // collection to all the sols the rover has experienced.
@@ -30,20 +33,29 @@ func (c *roverController) Path() string {
 //
 // An error trim.Response is returned if an invalid rover is passed.
 func (c *roverController) Handle(r *trim.Request) trim.Response {
-	set := pack.NewHashSet(pack.StringHasher)
-	for _, rover := range rovers {
-		set.Add(rover)
-	}
 	rover := r.URLArg("rover")
-	if !set.Contains(rover) {
-		return response.NewJSON(
-			trim.AnyMap{"message": fmt.Sprintf(
-				"rover %s not in %v",
-				rover, pack.Items(set),
-			)}, trim.CodeBadRequest,
-		)
+	rm, err := scraper.BuildManifest(rover, manifestPrefix)
+	if err != nil && err == scraper.ErrNoRover {
+		return errResponse(err, trim.CodeNotFound)
 	}
-	return nil
+	sm := trim.AnyMap{}
+	for _, sol := range rm.ActiveSols {
+		sm[strconv.Itoa(sol)] = makeSolPath(rover, sol)
+
+	}
+	mm := trim.AnyMap{
+		"name":        rm.Name,
+		"landingDate": rm.LandingDate,
+		"launchDate":  rm.LaunchDate,
+		"status":      rm.Status,
+		"maxSol":      rm.MaxSol,
+		"maxDate":     rm.MaxDate,
+		"totalPhotos": rm.TotalPhotos,
+	}
+	return response.NewJSON(
+		trim.AnyMap{"solPaths": sm, "manifest": mm},
+		trim.CodeOK,
+	)
 }
 
 // makeSolPath makes a path to a sol resource based on the rover and a sol.
