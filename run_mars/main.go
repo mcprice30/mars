@@ -3,14 +3,16 @@ package main
 import (
 	"flag"
 
-	"github.com/jwowillo/mars"
+	"github.com/mcprice30/mars"
 	"github.com/jwowillo/trim/server"
 )
 
 // main runs a server on the provided host and port which serves
 // mars.
 func main() {
-	server.New(host, port).Serve(mars.New(host, port))
+	s := server.New(host, port)
+	s.SetHeader("Access-Control-Allow-Origin", "*")
+	s.Serve(mars.New(host, port))
 }
 
 var (
