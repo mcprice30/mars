@@ -82,6 +82,8 @@ func configs(h string, p int) (
 		clientConf.CacheDuration = 0
 		staticConf.CacheDuration = 0
 	}
-	staticConf.IncludeFiles = []string{"config.js", "config.production.js"}
+	staticConf.Include = []string{".js", ".ts", ".html", ".css"}
+	staticConf.Subdomain = ""
+	staticConf.BasePath = "static"
 	return clientConf, application.APIDefault, staticConf
 }

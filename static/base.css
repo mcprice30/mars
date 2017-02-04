@@ -1,3 +1,8 @@
 body {
-  padding-top: 70px;
+    background: url("{{ static }}/mars_background.png") no-repeat center center fixed;
+    background-color: black;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
