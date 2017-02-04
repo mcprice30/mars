@@ -20,6 +20,12 @@ type thumbnailData struct {
 	thumbnail string
 }
 
+type coordsData struct {
+	latitude  string
+	longitude string
+	sol       int
+}
+
 // ErrNoRover is returned if a bad rover is requested.
 var ErrNoRover = errors.New("bad rover name")
 
@@ -168,14 +174,79 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 			outManifest.Photos[sol].EarthDate = thumbInfo.earthDate
 		}
 	} else {
-		fmt.Println("Unable to get thumbnail info!")
+		fmt.Fprintf(os.Stderr, "Unable to get thumbnail info for %s (%s)\n", roverName, err)
+	}
+
+	coordsData, err := fetchCoordsData(roverName, filePrefix, outManifest.MaxSol)
+	if err == nil {
+		for _, sol := range outManifest.ActiveSols {
+			solManifest := outManifest.Photos[sol]
+			solManifest.Longitude = coordsData[sol].longitude
+			solManifest.Latitude = coordsData[sol].latitude
+		}
+	} else {
+		fmt.Fprintf(os.Stderr, "Unable to get coords info for %s (%s)\n", roverName, err)
 	}
 
 	return outManifest, nil
 }
 
-func fetchThumbnailData(roverName, filePrefix string) ([]thumbnailData, error) {
+func fetchCoordsData(roverName, filePrefix string, numSols int) ([]coordsData, error) {
+	fileName := fmt.Sprintf("%s/%s_coords.txt", filePrefix, roverName)
+	coordsFile, err := os.Open(fileName)
+	if err != nil {
+		return nil, err
+	}
 
+	out := make([]coordsData, numSols+1)
+	minSol := 1000000
+	maxSol := 0
+
+	scanner := bufio.NewScanner(coordsFile)
+	for scanner.Scan() {
+		lineData := strings.Fields(scanner.Text())
+		if len(lineData) != 4 {
+			return nil, errors.New("Not enough columns.")
+		}
+		sSol, err := strconv.ParseInt(lineData[2], 0, 32)
+		if err != nil {
+			return nil, errors.New("Start sol is not an integer.")
+		}
+		eSol, err := strconv.ParseInt(lineData[3], 0, 32)
+		if err != nil {
+			return nil, errors.New("End sol is not an integer.")
+		}
+
+		startSol := int(sSol)
+		endSol := int(eSol)
+
+		for sol := startSol; sol <= endSol; sol++ {
+			if sol < minSol {
+				minSol = sol
+			}
+			if sol > maxSol {
+				maxSol = sol
+			}
+			out[sol] = coordsData{
+				longitude: lineData[0],
+				latitude:  lineData[1],
+				sol:       sol,
+			}
+		}
+	}
+
+	for sol := minSol; sol >= 0; sol-- {
+		out[sol] = out[minSol]
+	}
+
+	for sol := maxSol; sol < len(out); sol++ {
+		out[sol] = out[maxSol]
+	}
+
+	return out, nil
+}
+
+func fetchThumbnailData(roverName, filePrefix string) ([]thumbnailData, error) {
 	fileName := fmt.Sprintf("%s/%s_thumbnail.txt", filePrefix, roverName)
 	thumbnailFile, err := os.Open(fileName)
 	if err != nil {

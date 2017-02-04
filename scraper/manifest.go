@@ -17,6 +17,8 @@ type SolManifest struct {
 	ThumbnailUrl    string
 	ThumbnailCamera string
 	EarthDate       string
+	Longitude       string
+	Latitude        string
 }
 
 // String implements stringer for SolManifest
@@ -28,6 +30,10 @@ func (sm *SolManifest) String() string {
 	out := fmt.Sprintf("%d: %d photos [%s]", sm.Sol, sm.TotalPhotos, strings.Join(cameras, ","))
 	if sm.ThumbnailUrl != "" {
 		out = fmt.Sprintf("%s date: %s thumbnail (%s): %s", out, sm.EarthDate, sm.ThumbnailCamera, sm.ThumbnailUrl)
+	}
+
+	if sm.Longitude != "" {
+		out = fmt.Sprintf("%s located at: %s, %s", out, sm.Longitude, sm.Latitude)
 	}
 	return out
 }
