@@ -1,7 +1,7 @@
 import {Component, NgModule, OnInit, ViewEncapsulation} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 import {Rover, RoverManifest} from './entity/Rover';
-import {RoverViewService} from './service/roverview.service';
+import {RoverService} from './service/rover.service';
 
 @Component({
   selector: 'slider'
@@ -11,7 +11,7 @@ import {RoverViewService} from './service/roverview.service';
 
 export class SliderComponent implements OnInit {
 
-  constructor(private _roverViewService: RoverViewService) {
+  constructor(private _roverService: RoverService) {
 
   }
 
@@ -20,7 +20,7 @@ export class SliderComponent implements OnInit {
   }
 
   getRovers() {
-    this._roverViewService.getRoverList().then(rovers => {
+    this._roverService.getRoverList().then(rovers => {
       this.rovers = rovers;
     });
   }

@@ -1,7 +1,7 @@
-import {Component, NgModule, OnInit, ViewEncapsulation} from '@angular/core'
+import {Component, NgModule, OnInit, Input} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 import {Rover, RoverManifest} from './entity/Rover';
-import {RoverViewService} from './service/roverview.service';
+import {RoverService} from './service/rover.service';
 
 @Component({
   selector: 'collage-component',
@@ -10,9 +10,14 @@ import {RoverViewService} from './service/roverview.service';
 })
 
 export class CollageComponent implements OnInit {
-  rovers: Rover[] = [];
+  
+  @Input()
+  sol: number = 0;
 
-  constructor(private _roverViewService: RoverViewService) {
+  @Input()
+  camera: string = "";
+
+  constructor(private _roverService: RoverService) {
 
   }
 

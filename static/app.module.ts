@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component'
 import { SplashComponent } from './splash.component';
 import { RoverSelectComponent } from './roverselect.component';
-import { RoverViewService } from './service/roverview.service';
+import { RoverService } from './service/rover.service';
 import { HttpModule } from '@angular/http';
 import { MasonryModule } from 'angular2-masonry';
 import { CollageComponent } from './collage.component';
@@ -31,7 +31,7 @@ import { RouterComponent } from './router.component';
   ],
   bootstrap: [ RouterComponent ],
   providers: [
-    RoverViewService
+    RoverService
   ]
 })
 export class AppModule {}

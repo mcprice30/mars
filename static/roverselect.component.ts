@@ -1,7 +1,7 @@
 import {Component, NgModule, OnInit, ViewEncapsulation} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 import {Rover, RoverManifest} from './entity/Rover';
-import {RoverViewService} from './service/roverview.service';
+import {RoverService} from './service/rover.service';
 
 @Component({
   selector: 'rover-select',
@@ -12,7 +12,7 @@ import {RoverViewService} from './service/roverview.service';
 export class RoverSelectComponent implements OnInit {
   rovers: Rover[] = [];
 
-  constructor(private _roverViewService: RoverViewService) {
+  constructor(private _roverService: RoverService) {
 
   }
 
@@ -21,7 +21,7 @@ export class RoverSelectComponent implements OnInit {
   }
 
   getRovers() {
-    this._roverViewService.getRoverList().then(rovers => {
+    this._roverService.getRoverList().then(rovers => {
       this.rovers = rovers;
     });
   }
