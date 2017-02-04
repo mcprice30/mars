@@ -4,7 +4,7 @@ import (
 	"flag"
 
 	"github.com/jwowillo/mars"
-	"github.com/jwowillo/trim"
+	"github.com/jwowillo/trim/server"
 )
 
 // main runs a server on the provided host and port which serves

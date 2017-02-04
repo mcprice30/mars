@@ -45,7 +45,7 @@ func makeInjectPaths(h string, p int) func(*trim.Request) trim.AnyMap {
 
 // path to a trim.Application based on the provided trim.Request, host, and
 // port.
-func path(app *trim.Application, r *trim.Request, h string, p int) string {
+func path(app trim.Application, r *trim.Request, h string, p int) string {
 	var proto string
 	if r.TLS() != nil {
 		proto = "https://"
