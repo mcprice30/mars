@@ -10,6 +10,7 @@ import { HttpModule } from '@angular/http';
 import { MasonryModule } from 'angular2-masonry';
 import { CollageComponent } from './collage.component';
 import { AppRouterModule } from './app-router.module';
+import {SliderComponent} from './slider.component';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { AppRouterModule } from './app-router.module';
     RoverSelectComponent,
     CollageComponent,
     SplashComponent
+    SliderComponent
   ],
   bootstrap: [ AppComponent ],
   providers: [

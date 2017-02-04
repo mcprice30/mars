@@ -32,8 +32,7 @@
 //          "maxDate": (string),
 //          "maxSol": (int),
 //          "totalPhotos": (int),
-//          "locations": ({
-//            (int): ({"latitude": (string), "longitude": (string)})
+//          "locations": []({"latitude": (string), "longitude": (string)})
 //          })
 //        })
 //      }

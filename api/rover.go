@@ -43,12 +43,12 @@ func (c *roverController) Handle(r *trim.Request) trim.Response {
 		sm[strconv.Itoa(sol)] = makeSolPath(rover, sol)
 
 	}
-	ls := trim.AnyMap{}
+	var ls []trim.AnyMap
 	for _, loc := range rm.Locations {
-		ls[strconv.Itoa(loc.Sol)] = trim.AnyMap{
+		ls = append(ls, trim.AnyMap{
 			"latitude":  loc.Latitude,
 			"longitude": loc.Longitude,
-		}
+		})
 	}
 	mm := trim.AnyMap{
 		"name":        rm.Name,

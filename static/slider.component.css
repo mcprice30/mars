@@ -1,0 +1,21 @@
+div {
+	width: 100%;
+}
+
+input:disabled {
+  opacity: 0.75;
+}
+
+.disabled {
+  opacity: 0.75;
+}
+
+input {
+  width: 100%;
+}
+
+p {
+  color: white;
+  font-weight: bold;
+}
+
