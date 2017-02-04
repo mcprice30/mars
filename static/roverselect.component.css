@@ -1,4 +1,6 @@
 .robot-select {
 	background: #f0e7e7;
-	
+	border-width: 5px;
+	border-radius: 10px;
+	padding: 20px;	
 }

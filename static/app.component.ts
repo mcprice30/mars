@@ -16,6 +16,6 @@ export class AppComponent implements OnInit {
     var thing = this;
     setTimeout(function() {
       thing.show_splash = false;
-    }, 2000);
+    }, 1000);
   }
 }

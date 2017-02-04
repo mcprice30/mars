@@ -22,6 +22,7 @@ System.config({
     '@angular/platform-browser-dynamic/testing': '{{ static }}/node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.min.js',
     '@angular/http/testing': '{{ static }}/node_modules/@angular/http/bundles/http-testing.umd.min.js',
     '@angular/router/testing': '{{ static }}/node_modules/@angular/router/bundles/router-testing.umd.min.js',
+    'requirejs': '{{ static }}/node_modules/requirejs/bin/r.js',
 
     'rxjs': '{{ static }}/node_modules/rxjs',
     'typescript': '{{ static }}/node_modules/typescript/lib/typescript.js'
@@ -80,6 +81,9 @@ System.config({
       defaultExtension: 'js'
     },
     rxjs: {
+      defaultExtension: 'js'
+    },
+    'requirejs': {
       defaultExtension: 'js'
     }
   }
