@@ -1,15 +1,14 @@
-<h1>Choose a rover.</h1>
-<!--
-<div>
-  <p class="disabled">Sols: </p>
+<h1 *ngIf="mainView === 'rover-select'">Choose a rover.</h1>
+
+<div *ngIf="mainView === 'rover-map'">
+  <h1>{{ toCaps(rover) }}</h1>
+  <p>Sols: </p>
 </div>
 <div>
   <input type="range"
          name="points" id="points"
-         value="50" min="0" max="100"
-         disabled="true">
+         value="50" min="0" max="100">
 </div>
 <div>
-  <p class="disabled">Earth: </p>
+  <p>Earth: </p>
 </div>
--->
