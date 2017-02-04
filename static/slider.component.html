@@ -1,6 +1,7 @@
 <h1 *ngIf="mainView === 'rover-select'">Choose a rover.</h1>
 
 <div *ngIf="mainView === 'rover-map'">
+<div>
   <h1>{{ toCaps(rover) }}</h1>
   <p>Sols: </p>
 </div>
@@ -11,4 +12,5 @@
 </div>
 <div>
   <p>Earth: </p>
+</div>
 </div>
