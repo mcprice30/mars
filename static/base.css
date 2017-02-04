@@ -1,8 +1,33 @@
 body {
-    background: url("{{ static }}/mars_background.png") no-repeat center center fixed;
+    background: url("{{ static }}/mars_no_blur.png") no-repeat center center fixed;
     background-color: black;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+}
+
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+
+    display: flex;
+    align-items: center;
+}
+.title {
+    font-size: 60px;
+    color: #c1440e;
+}
+.subtitle {
+    color: #f0e7e7;
+    margin-top: 0px !important;
+}
+.line {
+    display: block;
+    height: 1px;
+    border: 0px;
+    border-top: 1px solid;
+    margin: 1em 0;
+    padding: 0;
+    color: #451804;
 }
