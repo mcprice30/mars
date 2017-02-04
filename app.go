@@ -6,6 +6,7 @@ import (
 
 	"github.com/jwowillo/trim"
 	"github.com/jwowillo/trim/application"
+	"github.com/mcprice30/mars/api"
 )
 
 // Application handles trim.Requests by presenting a client, api, and static.
@@ -16,13 +17,15 @@ type Application struct {
 // New Application which will be served from the given host and port.
 func New(h string, p int) *Application {
 	clientConf, apiConf, staticConf := configs(h, p)
-	return &Application{
+	app := &Application{
 		Web: application.NewWebWithConfig(
 			clientConf,
 			apiConf,
 			staticConf,
 		),
 	}
+	api.Configure(app.API())
+	return app
 }
 
 // makeInjectPaths function which overrides trim.Applications in trim.Request
