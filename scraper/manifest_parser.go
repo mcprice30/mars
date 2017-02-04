@@ -208,11 +208,11 @@ func fetchCoordsData(roverName, filePrefix string, numSols int) ([]coordsData, e
 		if len(lineData) != 4 {
 			return nil, errors.New("Not enough columns.")
 		}
-		sSol, err := strconv.ParseInt(lineData[2], 0, 32)
+		sSol, err := strconv.ParseInt(lineData[2], 10, 32)
 		if err != nil {
 			return nil, errors.New("Start sol is not an integer.")
 		}
-		eSol, err := strconv.ParseInt(lineData[3], 0, 32)
+		eSol, err := strconv.ParseInt(lineData[3], 10, 32)
 		if err != nil {
 			return nil, errors.New("End sol is not an integer.")
 		}
