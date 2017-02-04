@@ -1,3 +1,13 @@
-<masonry>
-	<masonry-brick class="brick" *ngFor="let brick of bricks">{{brick.title}}</masonry-brick>
-</masonry>
+<div class="section transparent">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<masonry [options]="collageOptions" class="masonry-block">
+					<masonry-brick class="rover-image-box" *ngFor="let roverImage of roverImages">
+						<img class= "rover-image" [src]="roverImage.url">
+					</masonry-brick>
+				</masonry>
+			</div>
+		</div>
+	</div>
+</div>

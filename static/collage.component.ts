@@ -4,7 +4,7 @@ import {Rover, RoverManifest} from './entity/Rover';
 import {RoverService} from './service/rover.service';
 
 @Component({
-  selector: 'collage-component',
+  selector: 'rover-collage',
   styleUrls: ['.{{ static }}/collage.component.css'],
   templateUrl: '{{ static }}/collage.component.html',
 })
@@ -12,21 +12,30 @@ import {RoverService} from './service/rover.service';
 export class CollageComponent implements OnInit {
   
   @Input()
+  rover: string = "curiosity";
+
+  @Input()
   sol: number = 0;
 
   @Input()
-  camera: string = "";
+  camera: string = "fhaz";
 
-  constructor(private _roverService: RoverService) {
+  constructor(private _roverService: RoverService) {}
 
+  ngOnInit() {
+    this.refreshCollage();
   }
 
-  bricks = [
-     {title: 'Brick 1'},
-     {title: 'Brick 2'},
-     {title: 'Brick 3'},
-     {title: 'Brick 4'},
-     {title: 'Brick 5'},
-     {title: 'Brick 6'}
-   ]
+  collageOptions = {
+    fitWidth: true
+  }
+
+  roverImages = []
+
+  refreshCollage() {
+    this._roverService.getRoverCamera(this.rover, this.sol, this.camera).then(data => {
+      this.roverImages = data.images;
+      console.log(data.images.length);
+    })
+  };
 }

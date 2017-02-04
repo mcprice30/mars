@@ -10,17 +10,22 @@ import { RoverService } from './service/rover.service';
 })
 
 export class AppComponent implements OnInit {
-  show_splash: boolean = true;
+  mainView: string = 'rover-select';
+
+  // Data for the collage
+  rover: string = "curiosity";
+  sol: number = 0;
+  camera: string = "fhaz";
 
   constructor(private _router: Router, private _roverService: RoverService) {}
 
   ngOnInit() {
-    this._roverService.getRoverSol('curiosity', 0).then(data => {
-      console.log(data);
-    });
+    // this._roverService.getRoverSol('curiosity', 0).then(data => {
+    //   console.log(data);
+    // });
 
-    this._roverService.getRoverCamera('curiosity', 0, 'chemcam').then(data => {
-      console.log(data);
-    });
+    // this._roverService.getRoverCamera('curiosity', 0, 'chemcam').then(data => {
+    //   console.log(data);
+    // });
   }
 }

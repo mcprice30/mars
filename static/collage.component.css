@@ -1,6 +1,22 @@
-.brick { 
-	width: 200px;
-	background: green;
+.rover-image-box { 
+	width: 250px;
+	height: 250px;
 	margin: 5px;
 	padding: 15px;
+}
+
+.rover-image {
+	height: 100%;
+	width: auto;
+	border-width: 10px;
+	border-color: black;
+	border-radius: 20px;
+}
+
+.masonry-block {
+	margin: 0 auto;
+}
+
+.transparent {
+	background: rgba(0,0,0,.75);
 }

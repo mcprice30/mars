@@ -140,6 +140,7 @@ export class RoverService {
         // normal response
         var jsonData = res.json().data;
         for (var i = 0; i < jsonData.images.length; i++) {
+          console.log(i)
           var tempRoverImage = new RoverImage();
           tempRoverImage.earthDate = jsonData.images[i].earthDate;
           tempRoverImage.url = jsonData.images[i].url;
