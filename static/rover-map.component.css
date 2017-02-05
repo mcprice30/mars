@@ -26,8 +26,8 @@ h1 { margin: 0; padding: 6px; border:0; font-size: 12pt; }
 .olForeignContainer div.olControlMousePosition { bottom: 28px; }
 
 .back-button {
+  top: 0;
   position: absolute !important;
-  position: top;
-  color: black;
+  color: white !important;
   z-index: 100000000000000;
 }
