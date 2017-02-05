@@ -1,6 +1,6 @@
 import { Component, NgModule, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Rover, RoverManifest, RoverSol, RoverCamera, RoverImage } from '../entity/Rover';
+import { Rover, RoverManifest, RoverSol, RoverCamera, RoverImage, RoverLocation } from '../entity/Rover';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
@@ -138,11 +138,13 @@ export class RoverService {
       this._http.get(`{{ api }}/rovers/${roverName}/${sol}/${cameraName}`).subscribe((res: Response) => {
         // normal response
         var jsonData = res.json().data;
-        for (var i = 0; i < jsonData.images.length; i++) {
-          var tempRoverImage = new RoverImage();
-          tempRoverImage.earthDate = jsonData.images[i].earthDate;
-          tempRoverImage.url = jsonData.images[i].url;
-          roverCamera.images.push(tempRoverImage);
+        if (jsonData.images !== null) {
+          for (var i = 0; i < jsonData.images.length; i++) {
+            var tempRoverImage = new RoverImage();
+            tempRoverImage.earthDate = jsonData.images[i].earthDate;
+            tempRoverImage.url = jsonData.images[i].url;
+            roverCamera.images.push(tempRoverImage);
+          }
         }
         resolved = true;
         resolve(roverCamera);
@@ -156,6 +158,23 @@ export class RoverService {
           resolve(roverCamera);
         }
       })
+    });
+  };
+
+  getAllRoverLocations(roverName: string): Promise<RoverLocation[]> {
+    return new Promise((resolve, reject) => {
+      var roverSolList = [];
+      this._http.get(`{{ api }}/rovers/${roverName}`).subscribe((res: Response) => {
+        // normal handle
+        var data = res.json().data;
+        resolve(data.manifest.locations);
+      }, (err: Response) => {
+        // on error
+        console.log(err);
+        resolve(roverSolList);
+      }, () => {
+        //finally
+      });
     });
   }
 }

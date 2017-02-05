@@ -53,9 +53,13 @@ body {
 }
 
 .thumb {
-	height: 120px;
+	height: 80px;
 	margin: 10px;
 	width: auto;
 	border: 5px solid #f0e7e7;
 	border-radius: 3px;
+}
+
+.olImageLoadError {
+  display: none !important;
 }

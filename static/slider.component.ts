@@ -1,6 +1,6 @@
-import {Component, NgModule, OnInit, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core'
+import {Component, NgModule, OnInit, ViewEncapsulation, Input, Output, EventEmitter, OnChanges} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
-import {Rover, RoverManifest} from './entity/Rover';
+import {Rover, RoverManifest, RoverSol} from './entity/Rover';
 import {RoverService} from './service/rover.service';
 
 @Component({
@@ -14,6 +14,8 @@ export class SliderComponent implements OnInit, OnChanges {
   rovers: Rover[] = [];
 
   earthDate: string = "";
+
+  thumbnails = [];
 
   @Input()
   mainView: string = "";
@@ -63,6 +65,13 @@ export class SliderComponent implements OnInit, OnChanges {
     });
   }
 
+  openCollage(rover: RoverWrapper) {
+    console.log(rover.sol);
+    this.solChange.emit(rover.sol);
+    this.cameraChange.emit(rover.info.thumbnailCamera.toLowerCase());
+    this.mainViewChange.emit('rover-collage');
+  }
+
   toCaps(rover) {
     return rover.split(' ').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase());
   }
@@ -82,10 +91,10 @@ export class SliderComponent implements OnInit, OnChanges {
 			  }
         self._roverService.getRoverSol(self.rover, self.real).then(data => {
           self.earthDate = data.earthDate;
-          $('#thumbnails').empty();
-          for (var sol in data.nearestSols) {
+          self.thumbnails = []
+          for (let sol in data.nearestSols) {
             self._roverService.getRoverSol(self.rover, sol).then(data => {
-              $('#thumbnails').prepend($('<img>', {src: data.thumbnailURL}).addClass('thumb'));
+              self.thumbnails.push(new RoverWrapper(sol, data));
             });
           }
         });
@@ -151,6 +160,14 @@ export class SliderComponent implements OnInit, OnChanges {
       }
     }
     return closest;
-  }
+  } 
+}
 
+class RoverWrapper {
+  constructor(sol: number, info: RoverSol) {
+    this.sol = sol;
+    this.info = info;
+  }
+  sol: number;
+  info: RoverSol;
 }

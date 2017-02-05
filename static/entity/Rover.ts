@@ -11,6 +11,7 @@ export class RoverManifest {
 	constructor() {
 		this.landingDate = "",
 		this.launchDate = "",
+		this.locations = [],
 		this.maxDate = "",
 		this.maxSol = 0,
 		this.name = "",
@@ -19,6 +20,7 @@ export class RoverManifest {
 	}
 	landingDate: string;
 	launchDate: string;
+	locations: RoverLocation[];
 	maxDate: string;
     maxSol: number;
 	name: string;
@@ -61,4 +63,13 @@ export class RoverImage {
 	}
 	earthDate: string;
 	url: string;
+}
+
+export class RoverLocation {
+	constructor() {
+		this.latitude = 0;
+		this.longitude = 0;
+	}
+	latitude: number;
+	longitude: number;
 }

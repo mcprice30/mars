@@ -47,8 +47,9 @@
 .back-button {
 	font-size: 15px;
 	padding-top: 10px;
+	color: #4c4c4c;
 }
 
 .back-button :hover {
-	color: #4c4c4c !important;
+	color: #5b5b5b;
 }

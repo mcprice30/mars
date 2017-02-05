@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Component, NgModule, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { Rover, RoverManifest, RoverCamera, RoverSol } from './entity/Rover';
 import { RoverService } from './service/rover.service';
@@ -9,7 +9,7 @@ import { RoverService } from './service/rover.service';
   templateUrl: '{{ static }}/collage.component.html',
 })
 
-export class CollageComponent implements OnInit {
+export class CollageComponent implements OnInit, OnChanges {
 
   @Input()
   mainView: string = "";
@@ -81,6 +81,15 @@ export class CollageComponent implements OnInit {
 
   backButton() {
     this.mainViewChange.emit('rover-map');
+  }
+
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    console.log(changes);
+    if (this.selectCamera !== undefined) {
+      if (changes['sol'] !== undefined) {
+        this.refreshCollage(function() {});
+      }
+    }
   }
 }
 

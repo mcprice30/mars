@@ -1,15 +1,15 @@
-import {Component, NgModule, OnInit, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core'
+import {Component, NgModule, OnInit, ViewEncapsulation, Input, Output, EventEmitter, OnChanges, SimpleChange} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
-import {Rover, RoverManifest} from './entity/Rover';
+import {Rover, RoverManifest, RoverSol, RoverLocation} from './entity/Rover';
 import {RoverService} from './service/rover.service';
 
 @Component({
   selector: 'rover-map',
-  styleUrls: ['.{{ static }}/roverselect.component.css'],
-  templateUrl: '{{ static }}/roverselect.component.html',
+  styleUrls: ['.{{ static }}/rover-map.component.css'],
+  templateUrl: '{{ static }}/rover-map.component.html',
 })
 
-export class RoverMapComponent implements OnInit {
+export class RoverMapComponent implements OnInit, OnChanges {
 
   rovers: Rover[] = [];
 
@@ -37,12 +37,42 @@ export class RoverMapComponent implements OnInit {
   @Output()
   cameraChange:EventEmitter<String> = new EventEmitter<String>();
 
-  constructor(private _roverService: RoverService) {
+  roverStartData: any;
 
+  constructor(private _roverService: RoverService) {
+    this.roverStartData = {
+      'curiosity': new RoverInit('curiosity', true, 1, 20, 11),
+      'opportunity': new RoverInit('opportunity', false, 1, 9, 9),
+      'spirit': new RoverInit('spirit', false, 1, 9, 9)
+    }
   }
+
+  // map variables
+  useHighRes: boolean = undefined;
+  minZoom: number = 0;
+  maxZoom: number = 0;
+  startZoom: number = 0;
+
+  locationData: RoverLocation[] = undefined;
 
   ngOnInit() {
     var self = this;
+    this.getRoverLocations(function() {
+      useHighRes = self.roverStartData[self.rover].useHighRes;
+      minZoom = self.roverStartData[self.rover].minZoom;
+      maxZoom = self.roverStartData[self.rover].maxZoom;
+      startZoom = self.roverStartData[self.rover].startZoom;
+      init();
+      drawPath(self.locationData);
+      moveMarker(self.sol);
+    });
+  }
+
+  getRoverLocations(callback) {
+    this._roverService.getAllRoverLocations(this.rover).then(data => {
+      this.locationData = data;
+      callback();
+    })
   }
 
   getRovers(callback) {
@@ -52,7 +82,25 @@ export class RoverMapComponent implements OnInit {
     });
   }
 
-  roverSelect(roverName: string) {
-    console.log(roverName);
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    console.log(changes);
+    if (this.locationData !== undefined) {
+      moveMarker(changes['sol']['currentValue']);
+    }
   }
+}
+
+class RoverInit {
+  constructor(name: string, useHighRes: boolean, minZoom: number, maxZoom: number, startZoom: number) {
+    this.name = name;
+    this.useHighRes = useHighRes;
+    this.minZoom = minZoom;
+    this.maxZoom = maxZoom;
+    this.startZoom = startZoom;
+  }
+  name: string;
+  useHighRes: boolean;
+  minZoom: number;
+  maxZoom: number;
+  startZoom: number;
 }

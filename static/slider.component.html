@@ -1,6 +1,6 @@
 <h1 *ngIf="mainView === 'rover-select'">Choose a rover.</h1>
 
-<div *ngIf="mainView === 'rover-map'">
+<div *ngIf="mainView === 'rover-map' || mainView === 'rover-collage'">
 <div>
   <h1>{{ toCaps(rover) }}</h1>
   <p>Sol: {{ sol }}</p>
@@ -11,5 +11,7 @@
 <div>
   <p>Earth Date: {{ earthDate }}</p>
 </div>
-<div id="thumbnails"></div>
+<div id="thumbnails">
+    <img *ngFor="let thumbnail of thumbnails" (click)="openCollage(thumbnail)" src="{{thumbnail.info.thumbnailURL}}" class="thumb">
+</div>
 </div>
