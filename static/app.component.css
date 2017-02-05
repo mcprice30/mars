@@ -13,4 +13,5 @@ slider {
   padding: 5px;
   display: block;
   height: 25%;
+  overflow: auto;
 }
