@@ -57,9 +57,11 @@ export class RoverSelectComponent implements OnInit {
                    	 	 	 0, 0, canvas.width, canvas.height);
 		};
 		img.src = '{{ static }}/rover-select.png';
-		ctx.fillStyle = '#3333ff';
+		ctx.fillStyle = '#f0e7e7';
 		ctx.font = 'bold 30px sans-serif';
     this.boxes = {};
+    var latitudes = [];
+    var longitudes = [];
     this.getRovers(function(rovers) {
 			for (var rover in rovers) {
 				var locs = rovers[rover].manifest.locations;
@@ -67,15 +69,23 @@ export class RoverSelectComponent implements OnInit {
         var temp = loc.longitude;
         loc.longitude = loc.latitude;
         loc.latitude = temp;
-				loc.latitude = ((loc.latitude+360)%360)*canvas.width/720;
-				loc.longitude = ((loc.longitude+360)%360)*canvas.height/720;
+				loc.latitude = (loc.latitude+100)*canvas.width/360;
+				loc.longitude = ((90-loc.longitude)*canvas.height/180;
         self.boxes[rovers[rover].manifest.name] = [loc.longitude - 15, loc.latitude - 10, loc.longitude + 15, loc.latitude + 200];
-				ctx.beginPath();
-				ctx.arc(loc.latitude, loc.longitude, 10, 0, Math.PI*2, true);
-				ctx.closePath();
+        latitudes.push(loc.latitude);
+        longitudes.push(loc.longitude);
 				ctx.fillText(rovers[rover].manifest.name, loc.latitude+20, loc.longitude+10);
 				ctx.fill();
 			}
+      let roverImg = new Image;
+      roverImg.onload = function() {
+        for (let i = 0; i < latitudes.length; i++) {
+          ctx.drawImage(roverImg, latitudes[i] - roverImg.width/2,
+                       longitudes[i] - roverImg.height/2,
+                       roverImg.width, roverImg.height);
+        }
+      }
+      roverImg.src = "http://curiosityrover.com/mslicon.png";
       canvas.addEventListener('click', function(e) {
         for (var box in self.boxes) {
           if self.insideRectangle([e.clientX, e.clientY], self.boxes[box]) {
