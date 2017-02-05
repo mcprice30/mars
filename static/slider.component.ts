@@ -44,7 +44,9 @@ export class SliderComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-		var self = this;
+    var self = this;
+    this.slider = $('#sol-slider');
+    this.real = 0;
   }
 
   getRovers(callback) {
@@ -59,10 +61,31 @@ export class SliderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+		var self = this;
+    if (changes['sol']) {
+      self.getRovers(function(rovers) {
+			  var rover = null;
+			  for (var r in rovers) {
+				  if (rovers[r].manifest.name.toLowerCase() == self.rover.toLowerCase() {
+					  rover = rovers[r];
+				  }
+			  }
+			  if (rover === null) {
+				  return;
+			  }
+        self._roverService.getRoverSol(self.rover, self.real).then(data => {
+          $('#thumbnails').empty();
+          for (var sol in data.nearestSols) {
+            self._roverService.getRoverSol(self.rover, sol).then(data => {
+              $('#thumbnails').prepend($('<img>', {src: data.thumbnailURL}).addClass('thumb'));
+            });
+          }
+        });
+      })
+    }
     if (!changes['mainView']) {
       return;
     }
-		var self = this;
     this.getRovers(function(rovers) {
 			var rover = null;
 			for (var r in rovers) {
@@ -74,6 +97,7 @@ export class SliderComponent implements OnInit, OnChanges {
 				return;
 			}
       var sols = Object.keys(rover.solPaths);
+      self.sols = sols;
 			for (var i in sols) {
 				sols[i] = parseInt(sols[i]);
 			}
@@ -81,6 +105,7 @@ export class SliderComponent implements OnInit, OnChanges {
       slider.rangeslider({
         polyfill: false,
         onSlide: function(position, value) {
+          self.real = value;
           var closest = closestSol(value, sols)
           self.sol = closest;
           self.solChange.emit(closest);
@@ -94,9 +119,8 @@ export class SliderComponent implements OnInit, OnChanges {
       slider.attr('min', min);
       slider.attr('max', max);
       slider.attr('step', Math.round(max/sols.length));
-      slider.attr('value', Math.round((max-min)/2));
-      var closest = closestSol(0, sols)
-      slider.val(closest).change();
+      slider.attr('value', self.real);
+      var closest = closestSol(self.real, sols)
       self.sol = closest;
       self.solChange.emit(closest);
       slider.rangeslider('update', true);
@@ -113,6 +137,14 @@ export class SliderComponent implements OnInit, OnChanges {
       }
     }
     return closest;
+  }
+
+  function left() {
+    console.log('left');
+  }
+
+  function right() {
+    console.log('right');
   }
 
 }

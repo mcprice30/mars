@@ -47,3 +47,13 @@ body {
 .rangeslider__fill {
   background: #c1440e !important;
 }
+
+#thumbnails {
+	text-align: center;
+}
+
+.thumb {
+	height: 120px;
+	margin: 10px;
+	width: auto;
+}

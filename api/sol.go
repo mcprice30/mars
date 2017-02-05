@@ -14,7 +14,7 @@ import (
 const solPath = roverPath + "/:sol"
 
 // radius to find nearby sols to.
-const radius = 10
+const radius = 4
 
 var (
 	// errBadSolType is an error for when the sol type is invalid.
