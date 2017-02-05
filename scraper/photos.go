@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 // Photo contains information about a particular photograph.
@@ -116,7 +117,11 @@ func getCamImgs(rover, sol, cam, api_key string, maxImgs int) ([]*Photo, error) 
 						if !valid {
 							return nil, errors.New("earth_date is not a string.")
 						}
-						earth_date_out = dateString
+						date, err := time.Parse("2006-01-02", dateString)
+						if err != nil {
+							return nil, fmt.Errorf("Cannot parse date: %s", err)
+						}
+						earth_date_out = date.Format("January 2, 2006")
 					}
 				}
 
