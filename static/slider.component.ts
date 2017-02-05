@@ -58,6 +58,9 @@ export class SliderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    if (!changes['mainView']) {
+      return;
+    }
 		var self = this;
     this.getRovers(function(rovers) {
 			var rover = null;
