@@ -56,4 +56,6 @@ body {
 	height: 120px;
 	margin: 10px;
 	width: auto;
+	border: 5px solid #f0e7e7;
+	border-radius: 3px;
 }

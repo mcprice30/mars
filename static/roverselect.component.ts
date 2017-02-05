@@ -64,6 +64,9 @@ export class RoverSelectComponent implements OnInit {
 			for (var rover in rovers) {
 				var locs = rovers[rover].manifest.locations;
 				var loc = locs[locs.length-1];
+        var temp = loc.longitude;
+        loc.longitude = loc.latitude;
+        loc.latitude = temp;
 				loc.latitude = ((loc.latitude+360)%360)*canvas.width/720;
 				loc.longitude = ((loc.longitude+360)%360)*canvas.height/720;
         self.boxes[rovers[rover].manifest.name] = [loc.longitude - 15, loc.latitude - 10, loc.longitude + 15, loc.latitude + 200];

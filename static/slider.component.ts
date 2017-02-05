@@ -34,6 +34,12 @@ export class SliderComponent implements OnInit, OnChanges {
   solChange:EventEmitter<number> = new EventEmitter<number>();
 
   @Input()
+  otherSol: number = 0;
+
+  @Output()
+  otherSolChange:EventEmitter<number> = new EventEmitter<number>();
+
+  @Input()
   camera: string = "";
 
   @Output()
@@ -47,6 +53,7 @@ export class SliderComponent implements OnInit, OnChanges {
     var self = this;
     this.slider = $('#sol-slider');
     this.real = 0;
+    this.loadImages = false;
   }
 
   getRovers(callback) {
@@ -62,7 +69,7 @@ export class SliderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
 		var self = this;
-    if (changes['sol']) {
+    if (changes['otherSol']) {
       self.getRovers(function(rovers) {
 			  var rover = null;
 			  for (var r in rovers) {
@@ -74,6 +81,7 @@ export class SliderComponent implements OnInit, OnChanges {
 				  return;
 			  }
         self._roverService.getRoverSol(self.rover, self.real).then(data => {
+          self.earthDate = data.earthDate;
           $('#thumbnails').empty();
           for (var sol in data.nearestSols) {
             self._roverService.getRoverSol(self.rover, sol).then(data => {
@@ -108,14 +116,15 @@ export class SliderComponent implements OnInit, OnChanges {
           self.real = value;
           var closest = closestSol(value, sols)
           self.sol = closest;
+          self.solChange.emit(closest);
         },
         onSlideEnd: function(position, value) {
           self.real = value;
           var closest = closestSol(value, sols)
           self.sol = closest;
           self.solChange.emit(closest);
+          self.otherSolChange.emit(closest);
           self._roverService.getRoverSol(self.rover, closest).then(data => {
-            self.earthDate = data.earthDate;
           });
         }
       });
@@ -142,14 +151,6 @@ export class SliderComponent implements OnInit, OnChanges {
       }
     }
     return closest;
-  }
-
-  function left() {
-    console.log('left');
-  }
-
-  function right() {
-    console.log('right');
   }
 
 }
