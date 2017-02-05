@@ -29,6 +29,17 @@ func (c *cameraController) Path() string {
 func (c *cameraController) Handle(r *trim.Request) trim.Response {
 	rover := r.URLArg("rover")
 	camera := r.URLArg("camera")
+	maxStr := r.FormArg("max")
+	var max int
+	var err error
+	if maxStr == "" {
+		max = 20
+	} else {
+		max, err = strconv.Atoi(r.FormArg("max"))
+		if err != nil {
+			return errResponse(err, trim.CodeBadRequest)
+		}
+	}
 	sol, err := strconv.Atoi(r.URLArg("sol"))
 	if err != nil {
 		return errResponse(errBadSolType, trim.CodeBadRequest)
@@ -49,6 +60,7 @@ func (c *cameraController) Handle(r *trim.Request) trim.Response {
 		rover,
 		strconv.Itoa(sol),
 		[]string{camera},
+		max,
 	)
 	if err != nil {
 		return errResponse(err, trim.CodeInternalServerError)
