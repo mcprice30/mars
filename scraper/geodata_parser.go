@@ -92,6 +92,24 @@ func fetchCoordsData(roverName, filePrefix string, numSols int) ([]Location, err
 		out[sol].Sol = sol
 	}
 
+	// Final sanitization pass. Replace any 0 values with their predecessors.
+	lastLon := out[0].Longitude
+	lastLat := out[0].Latitude
+
+	for sol := 0; sol < len(out); sol++ {
+		lon := out[sol].Longitude
+		lat := out[sol].Latitude
+
+		if lon == 0.0 && lat == 0.0 {
+			out[sol].Longitude = lastLon
+			out[sol].Latitude = lastLat
+			out[sol].Sol = sol
+		} else {
+			lastLon = lon
+			lastLat = lat
+		}
+	}
+
 	// Return the sol.
 	return out, nil
 }
