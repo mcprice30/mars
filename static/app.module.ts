@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser'
 import { RouterModule, Routes }  from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component'
-import { SplashComponent } from './splash.component';
 import { RoverSelectComponent } from './roverselect.component';
 import { RoverMapComponent } from './rover-map.component';
 import { RoverService } from './service/rover.service';
@@ -27,7 +26,6 @@ import { RouterComponent } from './router.component';
     RoverSelectComponent,
     RoverMapComponent,
     CollageComponent,
-    SplashComponent,
     SliderComponent,
     RouterComponent
   ],

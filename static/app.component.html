@@ -1,6 +1,6 @@
 <section>
 <rover-select [(rover)]="rover" [(sol)]="sol" [(camera)]="camera" [(mainView)]="mainView" *ngIf="mainView === 'rover-select'"></rover-select>
 <rover-map [(rover)]="rover" [(sol)]="sol" [(camera)]="camera" [(mainView)]="mainView" *ngIf="mainView === 'rover-map'"></rover-map>
-<rover-collage [(rover)]="rover" [(sol)]="sol" [(camera)]="camera" *ngIf="mainView === 'rover-collage'"></rover-collage>
+<rover-collage [(rover)]="rover" [(sol)]="sol" [(camera)]="camera" [(mainView)]="mainView" *ngIf="mainView === 'rover-collage'"></rover-collage>
 </section>
 <slider [(rover)]="rover" [(sol)]="sol" [(camera)]="camera" [(mainView)]="mainView"></slider>

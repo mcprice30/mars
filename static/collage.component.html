@@ -1,7 +1,24 @@
 <div class="section transparent">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-2 choose-camera-box">
+				<div class="row">
+					<div class="col-md-12 choose-camera-header">
+						<h1>Cameras</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div (click)="selectCamera(rover)" [ngStyle]="{'color': rover.style_selected['color'], 'background': rover.style_selected['background']}" *ngFor="let rover of cameraNames" class="col-md-12 camera-button">
+						<h3>{{rover.name}}</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div (click)="backButton()"class="col-md-12 back-button">
+						<h4>Back to map view</h4>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-10">
 				<masonry [options]="collageOptions" class="masonry-block">
 					<masonry-brick class="rover-image-box" *ngFor="let roverImage of roverImages">
 						<img class= "rover-image" [src]="roverImage.url">
@@ -11,3 +28,5 @@
 		</div>
 	</div>
 </div>
+
+<!--[ngStyle]="{'background': rover.style.background, 'border-width': rover.style['border-width'], 'border-bottom-left-radius': rover.style['border-radius'], 'border-bottom-right-radius': rover.style['border-radius'], 'color': rover.style.color}"-->

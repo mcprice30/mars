@@ -19,4 +19,36 @@
 
 .transparent {
 	background: rgba(0,0,0,.75);
+	overflow-y: auto;
+}
+
+.choose-camera-box {
+	background: #212121;
+	border-width: 5px;
+	border-radius: 15px;
+	padding-bottom: 15px;
+}
+
+.camera-button {
+	color: #c1440e;
+}
+
+.camera-button :hover {
+	background: #494949;
+	color: #e77d11;
+	border-width: 5px;
+}
+
+.choose-camera-header {
+	background: #161616;
+	color: white;
+}
+
+.back-button {
+	font-size: 15px;
+	padding-top: 10px;
+}
+
+.back-button :hover {
+	color: #4c4c4c !important;
 }
