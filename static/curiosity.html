@@ -36,9 +36,6 @@
 
 		<script type="text/javascript">
 			function loadMap() {
-				console.log("A!");
-				roverLongitude = 137.3574724;
-				roverLatitude = -4.71100826;
 				useHighRes = true;
 				minZoom = 1;
 				maxZoom = 20;
@@ -51,6 +48,7 @@
 								{"latitude": -4.6894669521344875, "longitude":137.441633},
 								{"latitude": -4.6994669521344875, "longitude":137.441633},
 								{"latitude": -4.711008263280026, "longitude":137.3574723}]);
+				moveMarker(0);
 			}
 		</script>
 	<body onload="loadMap()">

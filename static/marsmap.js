@@ -14,8 +14,8 @@ var mapBoundsLR018854 = new OpenLayers.Bounds( 137.359362, -4.679285, 137.401471
 var mapBoundsLR09650 = new OpenLayers.Bounds(137.252440, -4.801559, 137.377471, -4.665560);
 var mapBoundsLR09149 = new OpenLayers.Bounds(137.348560, -4.789745, 137.469506, -4.654738);
 
-var roverLongitude = 137.3574724;
-var roverLatitude = -4.71100826;
+var roverLongitude = 180.0;
+var roverLatitude = 0.0;
 
 
 var minZoom = 1;
@@ -127,16 +127,6 @@ function init() {
 
     map.addLayers([markers]);
 
-    /*
-    drawPath([{"latitude": -4.5894669521344875, "longitude":137.441633},
-              {"latitude": -4.6094669521344875, "longitude":137.441633},
-              {"latitude": -4.6294669521344875, "longitude":137.441633},
-              {"latitude": -4.6494669521344875, "longitude":137.441633},
-              {"latitude": -4.6894669521344875, "longitude":137.441633},
-              {"latitude": -4.6994669521344875, "longitude":137.441633},
-              {"latitude": -4.711008263280026, "longitude":137.3574723}]);
-    */
-
     if (useHighRes) { 
         map.zoomToExtent( mapBoundsBASE.transform(map.displayProjection, map.projection ) );
         map.zoomToExtent( mapBoundsLR018854.transform(map.displayProjection, map.projection ) );
@@ -168,8 +158,9 @@ function moveMarker(sol) {
         markers.removeMarker(roverMarker);
         var lon = locations[sol].longitude;
         var lat = locations[sol].latitude;
-        roverMarker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,
-            lat).transform(map.displayProjection, map.projection), mslicon);
+        var roverLoc = new OpenLayers.LonLat(lon, lat).transform(map.displayProjection, map.projection)
+        roverMarker = new OpenLayers.Marker(roverLoc, mslicon);
+        map.setCenter(roverLoc, map.getZoom());
         markers.addMarker(roverMarker);
         markers.redraw();
     }	
