@@ -35,14 +35,15 @@ var apiKeys []string = []string{
 	"ltfyjF4xUAu14OD9bvX1afj7cwbsDcXesz8jEc7C",
 }
 
-// GetSolImgs will take a rover, sol, and list of cameras and return a
-// list of photos, or an error if it occurred.
-func GetSolImgs(rover, sol string, cams []string) ([]*Photo, error) {
+// GetSolImgs will take a rover, sol, a list of cameras, and a maximum
+// number of images per camera to fetch and return a list of photos, or an
+// error if one occurred.
+func GetSolImgs(rover, sol string, cams []string, camMax int) ([]*Photo, error) {
 	out := []*Photo{}
 	for _, cam := range cams {
 		apiKey := apiKeys[apiKeyIdx%len(apiKeys)]
 		apiKeyIdx++
-		photos, err := getCamImgs(rover, sol, cam, apiKey)
+		photos, err := getCamImgs(rover, sol, cam, apiKey, camMax)
 		if err != nil {
 			return nil, err
 		}
@@ -51,7 +52,10 @@ func GetSolImgs(rover, sol string, cams []string) ([]*Photo, error) {
 	return out, nil
 }
 
-func getCamImgs(rover, sol, cam, api_key string) ([]*Photo, error) {
+// getCamImgs will take a rover, sol, cam, api key, and a maximum number of
+// images to return and return either a list of photos, or an error if one
+// occurred.
+func getCamImgs(rover, sol, cam, api_key string, maxImgs int) ([]*Photo, error) {
 
 	baseUrl := "https://api.nasa.gov/mars-photos/api/v1/rovers"
 
@@ -124,6 +128,10 @@ func getCamImgs(rover, sol, cam, api_key string) ([]*Photo, error) {
 						Camera:    cam,
 						EarthDate: earth_date_out,
 					})
+
+					if len(out) >= maxImgs {
+						return out, nil
+					}
 				}
 			}
 		}
