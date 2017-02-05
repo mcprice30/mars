@@ -66,7 +66,7 @@ export class SliderComponent implements OnInit, OnChanges {
   }
 
   openCollage(rover: RoverWrapper) {
-    console.log(rover.sol);
+    map.destroy();
     this.solChange.emit(rover.sol);
     this.cameraChange.emit(rover.info.thumbnailCamera.toLowerCase());
     this.mainViewChange.emit('rover-collage');

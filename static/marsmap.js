@@ -1,6 +1,6 @@
 var map, layer;
 var locations;
-var markers = new OpenLayers.Layer.Markers( "Markers" );
+var markers;
 var roverMarker;
 var mslsize = new OpenLayers.Size(32,32);
 var msloffset = new OpenLayers.Pixel(-(mslsize.w/2), -mslsize.h + 5);
@@ -41,6 +41,7 @@ function init() {
 
     map = new OpenLayers.Map('map', options);
 
+    markers = new OpenLayers.Layer.Markers( "Markers" );
 
     var nasaMapOverlay = new OpenLayers.Layer.TMS("NASA explore map",
         "http://ec2-54-241-20-2.us-west-1.compute.amazonaws.com/catalog/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/", {
