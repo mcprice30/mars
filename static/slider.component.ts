@@ -13,6 +13,8 @@ export class SliderComponent implements OnInit, OnChanges {
 
   rovers: Rover[] = [];
 
+  earthDate: string = "";
+
   @Input()
   mainView: string = "";
 
@@ -39,7 +41,6 @@ export class SliderComponent implements OnInit, OnChanges {
 
 
   constructor(private _roverService: RoverService) {
-
   }
 
   ngOnInit() {
@@ -80,8 +81,12 @@ export class SliderComponent implements OnInit, OnChanges {
       slider.rangeslider({
         polyfill: false,
         onSlide: function(position, value) {
-          self.sol = value;
-          self.solChange.emit(self.sol);
+          var closest = closestSol(value, sols)
+          self.sol = closest;
+          self.solChange.emit(closest);
+          self._roverService.getRoverSol(self.rover, closest).then(data => {
+            self.earthDate = data.earthDate;
+          });
         }
       });
       var min = sols[0];
@@ -90,11 +95,24 @@ export class SliderComponent implements OnInit, OnChanges {
       slider.attr('max', max);
       slider.attr('step', Math.round(max/sols.length));
       slider.attr('value', Math.round((max-min)/2));
-      slider.val(0).change();
-      self.sol = 0;
-      self.solChange.emit(self.sol);
+      var closest = closestSol(0, sols)
+      slider.val(closest).change();
+      self.sol = closest;
+      self.solChange.emit(closest);
       slider.rangeslider('update', true);
     });
+  }
+
+  function closestSol(value, sols) {
+    var closest = sols[0];
+    var dist = Infinity;
+    for (var i in sols) {
+      if (Math.abs(sols[i]-value) < dist) {
+        closest = sols[i]
+        dist = Math.abs(sols[i]-value);
+      }
+    }
+    return closest;
   }
 
 }

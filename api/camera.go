@@ -11,6 +11,9 @@ import (
 // cameraPath is the path to the camera resource.
 const cameraPath = solPath + "/:camera"
 
+// defaultMax number of images to return.
+const defaultMax = 20
+
 // cameraController is a resource that returns a list of URLs to images taken by
 // a rover's camera on a particular sol.
 type cameraController struct {
@@ -33,7 +36,7 @@ func (c *cameraController) Handle(r *trim.Request) trim.Response {
 	var max int
 	var err error
 	if maxStr == "" {
-		max = 20
+		max = defaultMax
 	} else {
 		max, err = strconv.Atoi(r.FormArg("max"))
 		if err != nil {
