@@ -159,6 +159,7 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 		}
 	}
 
+	// Try to find thumbnails for every sol.
 	thumbData, err := fetchThumbnailData(roverName, filePrefix)
 	if err == nil {
 		for _, thumbInfo := range thumbData {
@@ -171,6 +172,7 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 		fmt.Fprintf(os.Stderr, "Unable to get thumbnail info for %s (%s)\n", roverName, err)
 	}
 
+	// Try to find geodata for every sol.
 	coordsData, err := fetchCoordsData(roverName, filePrefix, outManifest.MaxSol)
 	if err == nil {
 		for _, sol := range outManifest.ActiveSols {
@@ -183,46 +185,66 @@ func BuildManifest(roverName, filePrefix string) (*RoverManifest, error) {
 		fmt.Fprintf(os.Stderr, "Unable to get coords info for %s (%s)\n", roverName, err)
 	}
 
+	// Done!
 	return outManifest, nil
 }
 
+// fetchCoordsData will take the name of a rover, a path to
+// "/scraper/manifests/", and the number of sols that this rover has been active
+// on mars, and will return the location of the rover on every sol, or an error
+// if one occurred.
 func fetchCoordsData(roverName, filePrefix string, numSols int) ([]Location, error) {
+
+	// Open the pre-scraped file.
 	fileName := fmt.Sprintf("%s/%s_coords.txt", filePrefix, roverName)
 	coordsFile, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
 	}
 
+	// Build the output slice (include sol 0, just to be sure).
 	out := make([]Location, numSols+1)
 	minSol := 1000000
 	maxSol := 0
 
+	// Read file line by line.
 	scanner := bufio.NewScanner(coordsFile)
 	for scanner.Scan() {
+		// There must be 4 columns
 		lineData := strings.Fields(scanner.Text())
 		if len(lineData) != 4 {
 			return nil, errors.New("Not enough columns.")
 		}
+
+		// get the startSol of an interval.
 		sSol, err := strconv.ParseInt(lineData[2], 10, 32)
 		if err != nil {
 			return nil, errors.New("Start sol is not an integer.")
 		}
+
+		// get the endSol of an interval.
 		eSol, err := strconv.ParseInt(lineData[3], 10, 32)
 		if err != nil {
 			return nil, errors.New("End sol is not an integer.")
 		}
+
+		// get the longitude of the rover during the interval.
 		longitude, err := strconv.ParseFloat(lineData[0], 64)
 		if err != nil {
 			return nil, errors.New("Longitude is not a number.")
 		}
+
+		// get the latitude of the rover during the interval.
 		latitude, err := strconv.ParseFloat(lineData[1], 64)
 		if err != nil {
 			return nil, errors.New("Latitude is not a number.")
 		}
 
+		// cast from int64 (from parseInt) to int
 		startSol := int(sSol)
 		endSol := int(eSol)
 
+		// fill every sol in this interval with the given latitude and longitude.
 		for sol := startSol; sol <= endSol; sol++ {
 			if sol < minSol {
 				minSol = sol
@@ -238,38 +260,56 @@ func fetchCoordsData(roverName, filePrefix string, numSols int) ([]Location, err
 		}
 	}
 
+	// Backfill earlier sols with the data from the first sol we have geodata for.
 	for sol := minSol; sol >= 0; sol-- {
 		out[sol] = out[minSol]
 		out[sol].Sol = sol
 	}
 
+	// Frontfill later sols with the data from the last sol we have geodata for.
 	for sol := maxSol; sol < len(out); sol++ {
 		out[sol] = out[maxSol]
 		out[sol].Sol = sol
 	}
 
+	// Return the sol.
 	return out, nil
 }
 
+// fetchThumnailData will fetch pre-scraped thumbnails for a given rover, where
+// filePrefix is the path to /scraper/manifests/.
+// It will return data on the thumbnails for every available sol, or an error
+// if one occurred.
 func fetchThumbnailData(roverName, filePrefix string) ([]thumbnailData, error) {
+
+	// Open the pre-scraped file.
 	fileName := fmt.Sprintf("%s/%s_thumbnail.txt", filePrefix, roverName)
 	thumbnailFile, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
 	}
 
+	// Store thumbnail data output.
 	out := []thumbnailData{}
 
+	// Read file line by line.
 	scanner := bufio.NewScanner(thumbnailFile)
 	for scanner.Scan() {
+
+		// Each line must have 4 columns.
 		lineData := strings.Fields(scanner.Text())
 		if len(lineData) != 4 {
 			return nil, errors.New("Not enough columns.")
 		}
+
+		// First, the sol that this thumbnail data is for, which must be an int.
 		sol, err := strconv.ParseInt(lineData[0], 0, 32)
 		if err != nil {
 			return nil, errors.New("Sol is not an integer.")
 		}
+
+		// Then, the camera that took the picture, the earth date it was taken,
+		// and the url of the thumbnail.
 		out = append(out, thumbnailData{
 			sol:       int(sol),
 			camera:    lineData[1],
@@ -278,13 +318,20 @@ func fetchThumbnailData(roverName, filePrefix string) ([]thumbnailData, error) {
 		})
 	}
 
+	// Return an error if we couldn't scan the file.
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 
+	// Done!
 	return out, nil
 }
 
+// parseSolManifest will take an unmarshalled JSON object containing
+// the manifest data for a particular sol.
+//
+// It will return the sol in question, along with that sol's manifest, or
+// an error if one occurred.
 func parseSolManifest(data interface{}) (int, *SolManifest, error) {
 
 	manifestMap, valid := data.(map[string]interface{})
@@ -325,6 +372,7 @@ func parseSolManifest(data interface{}) (int, *SolManifest, error) {
 		return -1, nil, errors.New("Sol manifest cameras are not a list.")
 	}
 
+	// Put every camera this day into a set.
 	solCameras := map[string]interface{}{}
 
 	for _, camera := range camerasList {
@@ -335,6 +383,7 @@ func parseSolManifest(data interface{}) (int, *SolManifest, error) {
 		}
 	}
 
+	// Build and return the manifest.
 	solManifest := &SolManifest{
 		Sol:         int(solNum),
 		TotalPhotos: int(totalPhotosNum),

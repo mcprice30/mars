@@ -8,16 +8,26 @@ import (
 	"net/http"
 )
 
+// Photo contains information about a particular photograph.
 type Photo struct {
-	Url       string
-	Camera    string
+
+	// Url is the location of the photograph.
+	Url string
+
+	// Camera describes which camera the rover took the picture with.
+	Camera string
+
+	// EarthDate contains the earth date when the picture was taken.
 	EarthDate string
 }
 
+// String implements Stringer for photo. It is used in debugging.
 func (p *Photo) String() string {
 	return fmt.Sprintf("Taken: %s	(%s) At: %s", p.EarthDate, p.Camera, p.Url)
 }
 
+// Used to cycle through multiple apiKeys to allow for more requests per hour.
+// Each of these keys belongs to a different person, just as a heads up.
 var apiKeyIdx int = 0
 var apiKeys []string = []string{
 	"mx2LmwatV6u7v6qgVXSilCK5kiieKLdca7TxK52p",
@@ -63,15 +73,20 @@ func getCamImgs(rover, sol, cam, api_key string) ([]*Photo, error) {
 		return nil, fmt.Errorf("Cannot unmarshal response (%s)", err)
 	}
 
+	// Photos will be stored here.
 	out := []*Photo{}
 
 	for k, v := range jso {
+
+		// Find the photos field of the returned json.
 		if k == "photos" {
+			// The "photos" field must be a list.
 			photoArr, valid := v.([]interface{})
 			if !valid {
 				return nil, errors.New("Photos are not a list.")
 			}
 
+			// Iterate over every photo.
 			for _, photo := range photoArr {
 
 				// Convert the photo into a map.
@@ -81,6 +96,7 @@ func getCamImgs(rover, sol, cam, api_key string) ([]*Photo, error) {
 					return nil, errors.New("Photo is not map.")
 				}
 
+				// Extract the url and earth date for each photo.
 				url_out := ""
 				earth_date_out := ""
 
@@ -100,6 +116,8 @@ func getCamImgs(rover, sol, cam, api_key string) ([]*Photo, error) {
 					}
 				}
 
+				// If we could extract a url and earth date, add this photo to the
+				// output.
 				if url_out != "" && earth_date_out != "" {
 					out = append(out, &Photo{
 						Url:       url_out,
@@ -109,8 +127,6 @@ func getCamImgs(rover, sol, cam, api_key string) ([]*Photo, error) {
 				}
 			}
 		}
-
 	}
 	return out, nil
-
 }
