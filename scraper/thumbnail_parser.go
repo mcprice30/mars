@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // thumbnailData contains information about what thumbnail is availabile for a
@@ -50,12 +51,17 @@ func fetchThumbnailData(roverName, filePrefix string) ([]thumbnailData, error) {
 			return nil, errors.New("Sol is not an integer.")
 		}
 
+		date, err := time.Parse("2006-01-02", lineData[2])
+		if err != nil {
+			return nil, fmt.Errorf("Cannot parse date: %s", err)
+		}
+
 		// Then, the camera that took the picture, the earth date it was taken,
 		// and the url of the thumbnail.
 		out = append(out, thumbnailData{
 			sol:       int(sol),
 			camera:    lineData[1],
-			earthDate: lineData[2],
+			earthDate: date.Format("January 2, 2006"),
 			thumbnail: lineData[3],
 		})
 	}
