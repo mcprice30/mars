@@ -104,7 +104,7 @@ export class SliderComponent implements OnInit, OnChanges {
       var slider = $('#sol-slider')
       slider.rangeslider({
         polyfill: false,
-        onSlide: function(position, value) {
+        onSlideEnd: function(position, value) {
           self.real = value;
           var closest = closestSol(value, sols)
           self.sol = closest;
