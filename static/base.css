@@ -22,6 +22,7 @@ body {
     color: #f0e7e7;
     margin-top: 0px !important;
 }
+
 .line {
     display: block;
     height: 1px;
@@ -30,4 +31,19 @@ body {
     margin: 1em 0;
     padding: 0;
     color: #451804;
+}
+
+.rangeslider--horizontal {
+  height: 10px !important;
+  margin-bottom: 10px;
+}
+
+.rangeslider__handle {
+  height: 20px !important;
+  width: 20px !important;
+  margin-top: 5px !important;
+}
+
+.rangeslider__fill {
+  background: #c1440e !important;
 }

@@ -43,7 +43,6 @@ export class RoverMapComponent implements OnInit {
 
   ngOnInit() {
     var self = this;
-    console.log(self.rover);
   }
 
   getRovers(callback) {

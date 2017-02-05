@@ -3,14 +3,12 @@
 <div *ngIf="mainView === 'rover-map'">
 <div>
   <h1>{{ toCaps(rover) }}</h1>
-  <p>Sols: </p>
+  <p>Sols: {{ sol }}</p>
 </div>
 <div>
-  <input type="range"
-         name="points" id="points"
-         value="50" min="0" max="100">
+  <input type="range" id="sol-slider" data-rangeslider>
 </div>
 <div>
-  <p>Earth: </p>
+  <p>Earth: {{ sol }}</p>
 </div>
 </div>
