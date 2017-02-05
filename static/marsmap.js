@@ -2,17 +2,17 @@ var map, layer;
 var locations;
 var markers;
 var roverMarker;
-var mslsize = new OpenLayers.Size(32,32);
-var msloffset = new OpenLayers.Pixel(-(mslsize.w/2), -mslsize.h + 5);
-var mslicon = new OpenLayers.Icon('http://curiosityrover.com/mslicon.png', mslsize, msloffset);
+var mslsize;
+var msloffset;
+var mslicon;
 
 // Map Bounds
-var mapBounds_full = new OpenLayers.Bounds(-180.000000, -90.0, 180.0, 90.0);
-var mapBounds_ctx = new OpenLayers.Bounds(136.696260, -5.333154, 137.862717, -4.132530);
-var mapBoundsBASE = new OpenLayers.Bounds( 137.380794, -4.64535890429, 137.465011675, -4.53738741241);
-var mapBoundsLR018854 = new OpenLayers.Bounds( 137.359362, -4.679285, 137.401471, -4.637177);
-var mapBoundsLR09650 = new OpenLayers.Bounds(137.252440, -4.801559, 137.377471, -4.665560);
-var mapBoundsLR09149 = new OpenLayers.Bounds(137.348560, -4.789745, 137.469506, -4.654738);
+var mapBounds_full;
+var mapBounds_ctx;
+var mapBoundsBASE;
+var mapBoundsLR018854;
+var mapBoundsLR09650;
+var mapBoundsLR09149;
 
 var roverLongitude = 180.0;
 var roverLatitude = 0.0;
@@ -26,6 +26,18 @@ var useHighRes = true;
 
 var mvnzoom = 8;
 function init() {
+    mslsize = new OpenLayers.Size(32,32);
+    msloffset = new OpenLayers.Pixel(-(mslsize.w/2), -mslsize.h + 5);
+    mslicon = new OpenLayers.Icon('http://curiosityrover.com/mslicon.png', mslsize, msloffset);
+
+    // Map Bounds
+    mapBounds_full = new OpenLayers.Bounds(-180.000000, -90.0, 180.0, 90.0);
+    mapBounds_ctx = new OpenLayers.Bounds(136.696260, -5.333154, 137.862717, -4.132530);
+    mapBoundsBASE = new OpenLayers.Bounds( 137.380794, -4.64535890429, 137.465011675, -4.53738741241);
+    mapBoundsLR018854 = new OpenLayers.Bounds( 137.359362, -4.679285, 137.401471, -4.637177);
+    mapBoundsLR09650 = new OpenLayers.Bounds(137.252440, -4.801559, 137.377471, -4.665560);
+    mapBoundsLR09149 = new OpenLayers.Bounds(137.348560, -4.789745, 137.469506, -4.654738);
+
     var options = {
         controls: [
             new OpenLayers.Control.Navigation(),
