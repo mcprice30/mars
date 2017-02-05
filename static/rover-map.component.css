@@ -30,4 +30,5 @@ h1 { margin: 0; padding: 6px; border:0; font-size: 12pt; }
   position: absolute !important;
   color: white !important;
   z-index: 100000000000000;
+  padding-top: 15px
 }

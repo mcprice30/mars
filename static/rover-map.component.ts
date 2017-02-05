@@ -2,10 +2,15 @@ import {Component, NgModule, OnInit, ViewEncapsulation, Input, Output, EventEmit
 import {BrowserModule} from '@angular/platform-browser'
 import {Rover, RoverManifest, RoverSol, RoverLocation} from './entity/Rover';
 import {RoverService} from './service/rover.service';
+import './OpenLayers.js';
+import './marsmap.js';
 
 @Component({
   selector: 'rover-map',
-  styleUrls: ['.{{ static }}/rover-map.component.css'],
+  styleUrls: [
+    '.{{ static }}/theme/default/style.css',
+    '.{{ static }}/rover-map.component.css',
+  ],
   templateUrl: '{{ static }}/rover-map.component.html',
 })
 
@@ -55,6 +60,8 @@ export class RoverMapComponent implements OnInit, OnChanges {
 
   locationData: RoverLocation[] = undefined;
 
+  loaded = false;
+
   ngOnInit() {
     var self = this;
     this.getRoverLocations(function() {
@@ -83,10 +90,13 @@ export class RoverMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    console.log(changes);
     if (this.locationData !== undefined) {
       moveMarker(changes['sol']['currentValue']);
     }
+  }
+
+  backButton() {
+    this.mainViewChange.emit('rover-select');
   }
 }
 

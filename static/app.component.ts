@@ -13,9 +13,9 @@ export class AppComponent implements OnInit {
   mainView: string = 'rover-select';
 
   // Data for the collage
-  rover: string = "curiosity";
+  rover: string = "";
   sol: number = 0;
-  camera: string = "fhaz";
+  camera: string = "";
 
   constructor(private _router: Router, private _roverService: RoverService) {}
 

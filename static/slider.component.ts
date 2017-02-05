@@ -69,6 +69,7 @@ export class SliderComponent implements OnInit, OnChanges {
     map.destroy();
     this.solChange.emit(rover.sol);
     this.cameraChange.emit(rover.info.thumbnailCamera.toLowerCase());
+    map.destroy();
     this.mainViewChange.emit('rover-collage');
   }
 

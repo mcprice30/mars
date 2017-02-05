@@ -28,7 +28,10 @@ System.config({
     'typescript': '{{ static }}/node_modules/typescript/lib/typescript.js',
 
     "angular2-masonry": "{{ static }}/node_modules/angular2-masonry",
-    "masonry-layout": "{{ static }}/node_modules/masonry-layout/dist/masonry.pkgd.js"
+    "masonry-layout": "{{ static }}/node_modules/masonry-layout/dist/masonry.pkgd.js",
+
+    "marsmap.js": "{{ static }}/marsmap.js",
+    "OpenLayers.js": "{{ static }}/OpenLayers.js"
   },
   packages: {
     app: {
@@ -94,6 +97,12 @@ System.config({
       main: "index"
     },
     'masonry-layout': {
+      defaultExtension: "js"
+    },
+    'marsmap.js': {
+      defaultExtension: "js"
+    },
+    'OpenLayers.js': {
       defaultExtension: "js"
     }
   }

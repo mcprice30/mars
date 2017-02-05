@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core'
+import { Component, NgModule, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { Rover, RoverManifest, RoverCamera, RoverSol } from './entity/Rover';
 import { RoverService } from './service/rover.service';
@@ -18,13 +18,13 @@ export class CollageComponent implements OnInit, OnChanges {
   mainViewChange:EventEmitter<String> = new EventEmitter<String>();
   
   @Input()
-  rover: string = "curiosity";
+  rover: string = "";
 
   @Input()
   sol: number = 0;
 
   @Input()
-  camera: string = "fhaz";
+  camera: string = "";
 
   imageAmount = 20;
 
@@ -47,6 +47,7 @@ export class CollageComponent implements OnInit, OnChanges {
           var tempCameraButton = new CameraButton(property);
           tempCameraButton.style_selected['background'] = '#212121';
           tempCameraButton.style_selected['color'] = '#c1440e';
+          console.log(self.camera);
           if (self.camera === tempCameraButton.name.toLowerCase()) {
             tempCameraButton.style_selected['background'] = '#111111';
             tempCameraButton.style_selected['color'] = '#fda600';
@@ -84,7 +85,6 @@ export class CollageComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    console.log(changes);
     if (this.selectCamera !== undefined) {
       if (changes['sol'] !== undefined) {
         this.refreshCollage(function() {});
