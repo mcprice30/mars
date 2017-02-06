@@ -57,13 +57,15 @@ func (c *solController) Handle(r *trim.Request) trim.Response {
 		cps[c] = makeCameraPath(rover, sol, c)
 	}
 	near := make(map[int]string)
-	for _, sol := range rm.GetNearbySols(sol, radius, cs) {
+	closestSol, nearbySols := rm.GetNearbySols(sol, radius, cs)
+	for _, sol := range nearbySols {
 		near[sol.Sol] = makeSolPath(rover, sol.Sol)
 	}
 	return response.NewJSON(
 		trim.AnyMap{
 			"cameraPaths":     cps,
 			"nearestSols":     near,
+			"closestSol":      closestSol,
 			"thumbnailURL":    sm.ThumbnailUrl,
 			"thumbnailCamera": sm.ThumbnailCamera,
 			"earthDate":       sm.EarthDate,

@@ -119,23 +119,29 @@ type RoverManifest struct {
 //
 // If the given sol does not match the list of cameras, this will return up to
 // 'radius' earlier and 'radius' later sols.
-func (rm *RoverManifest) GetNearbySols(sol, radius int, cameras []string) []*SolManifest {
+func (rm *RoverManifest) GetNearbySols(searchSol, radius int, cameras []string) (int, []*SolManifest) {
 	out := []*SolManifest{}
 
 	// Binary search for the exact match.
-	midIdx := sort.SearchInts(rm.ActiveSols, sol)
+	midIdx := sort.SearchInts(rm.ActiveSols, searchSol)
+
+	closestSol := -1
 
 	// If we have an exact match, add it.
 	if midIdx >= 0 && midIdx < len(rm.ActiveSols) &&
 		rm.Photos[rm.ActiveSols[midIdx]].containsCamera(cameras) {
 
 		out = append(out, rm.Photos[rm.ActiveSols[midIdx]])
+		closestSol = rm.ActiveSols[midIdx]
 	}
 
 	// Prepend up to 'radius' earlier sols.
 	added := 0
 	for searchIdx := midIdx - 1; searchIdx > 0 && added < radius; searchIdx-- {
 		sol := rm.ActiveSols[searchIdx]
+		if closestSol < 0 || absInt(closestSol-searchSol) > absInt(sol-searchSol) {
+			closestSol = sol
+		}
 		if rm.Photos[sol].containsCamera(cameras) {
 			out = append([]*SolManifest{rm.Photos[sol]}, out...)
 			added++
@@ -146,13 +152,23 @@ func (rm *RoverManifest) GetNearbySols(sol, radius int, cameras []string) []*Sol
 	added = 0
 	for searchIdx := midIdx + 1; searchIdx < len(rm.ActiveSols) && added < radius; searchIdx++ {
 		sol := rm.ActiveSols[searchIdx]
+		if closestSol < 0 || absInt(closestSol-searchSol) > absInt(sol-searchSol) {
+			closestSol = sol
+		}
 		if rm.Photos[sol].containsCamera(cameras) {
 			out = append(out, rm.Photos[sol])
 			added++
 		}
 	}
 
-	return out
+	return closestSol, out
+}
+
+func absInt(n int) int {
+	if n < 0 {
+		return -n
+	}
+	return n
 }
 
 // containsCamera will return true if and only if at least one of the
