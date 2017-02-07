@@ -80,12 +80,14 @@ export class RoverSelectComponent implements OnInit {
       let roverImg = new Image;
       roverImg.onload = function() {
         for (let i = 0; i < latitudes.length; i++) {
+					console.log("Drawing image!");
           ctx.drawImage(roverImg, latitudes[i] - roverImg.width/2,
                        longitudes[i] - roverImg.height/2,
                        roverImg.width, roverImg.height);
         }
       }
-      roverImg.src = "http://curiosityrover.com/mslicon.png";
+			console.log("Setting image!");
+      roverImg.src = '{{ static }}/rover_icon.png';
       canvas.addEventListener('click', function(e) {
         for (var box in self.boxes) {
           if self.insideRectangle([e.clientX, e.clientY], self.boxes[box]) {

@@ -17,6 +17,7 @@ var mapBoundsLR09149;
 var roverLongitude = 180.0;
 var roverLatitude = 0.0;
 
+var vector;
 
 var minZoom = 1;
 var maxZoom = 20;
@@ -28,7 +29,7 @@ var mvnzoom = 8;
 function init() {
     mslsize = new OpenLayers.Size(32,32);
     msloffset = new OpenLayers.Pixel(-(mslsize.w/2), -mslsize.h + 5);
-    mslicon = new OpenLayers.Icon('http://curiosityrover.com/mslicon.png', mslsize, msloffset);
+    mslicon = new OpenLayers.Icon('static/rover_icon.png', mslsize, msloffset);
 
     // Map Bounds
     mapBounds_full = new OpenLayers.Bounds(-180.000000, -90.0, 180.0, 90.0);
@@ -138,6 +139,19 @@ function init() {
         ]);
     }
 
+    var styleMap = new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
+        fill: true,
+        fillColor: "black",
+        fillOpacity: 1.0,
+        strokeDashstyle: "solid",
+        strokeOpacity: 0.6,
+        strokeColor: "#3333ff",
+        strokeWidth: 3
+    }, OpenLayers.Feature.Vector.style["default"]));
+
+    vector = new OpenLayers.Layer.Vector("Track", {styleMap: styleMap});
+
+    map.addLayers([vector]);
     map.addLayers([markers]);
 
     if (useHighRes) { 
@@ -181,17 +195,6 @@ function moveMarker(sol) {
 
 function drawPath(input_locations) {
     locations = input_locations;
-    var styleMap = new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
-        fill: true,
-        fillColor: "black",
-        fillOpacity: 1.0,
-        strokeDashstyle: "solid",
-        strokeOpacity: 0.6,
-        strokeColor: "#3333ff",
-        strokeWidth: 3
-    }, OpenLayers.Feature.Vector.style["default"]));
-
-    var vector = new OpenLayers.Layer.Vector("Track", {styleMap: styleMap});
 
     p = new Array();
     for (var i = 0; i < locations.length ; i++) {
@@ -203,7 +206,6 @@ function drawPath(input_locations) {
     vector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(p))]);
     vector.display(false);
 
-    map.addLayers([vector]);
 }
 
 function ctxTileURL(bounds) {
@@ -338,12 +340,8 @@ function getWindowWidth() {
 
 function resize() {
     var map = document.getElementById("map");
-    //var header = document.getElementById("header");
-    //var subheader = document.getElementById("subheader");
     map.style.height = (getWindowHeight()-127) + "px";
     map.style.width = (getWindowWidth()-20) + "px";
-    //header.style.width = (getWindowWidth()-20) + "px";
-    //subheader.style.width = (getWindowWidth()-20) + "px";
     if (map.updateSize) { map.updateSize(); };
 }
 
