@@ -5,7 +5,7 @@ h1 {
 section {
   display: block;
   height: 75%;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 slider {

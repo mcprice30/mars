@@ -25,6 +25,8 @@ System.config({
     'requirejs': '{{ static }}/node_modules/requirejs/bin/r.js',
 
     'rxjs': '{{ static }}/node_modules/rxjs',
+    'three': '{{ static }}/node_modules/three/build/three.js',
+    'three-orbitcontrols-ts': '{{ static }}/node_modules/three-orbitcontrols-ts',
     'typescript': '{{ static }}/node_modules/typescript/lib/typescript.js',
 
     "angular2-masonry": "{{ static }}/node_modules/angular2-masonry",
@@ -89,10 +91,13 @@ System.config({
     rxjs: {
       defaultExtension: 'js'
     },
+    'three': {
+      defaultExtension: 'js'
+    },
     'requirejs': {
       defaultExtension: 'js'
     },
-    "angular2-masonry": { 
+    "angular2-masonry": {
       defaultExtension: "js",
       main: "index"
     },
